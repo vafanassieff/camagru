@@ -1,11 +1,22 @@
-<head>
-  <meta charset="utf-8">
-  <link rel="icon" href="install_files/oscar.ico" />
-  <link rel="stylesheet" type="text/css" href="css/all.css">
-  <title>Camagru</title>
-</head>
-<body>
-<div id="center">
-<header>
-<a href="index.php" class="menu">Boutique</a>
-</header> 
+<?php
+
+?>
+
+<header class="header-login-signup">
+
+	<div class="header-limiter">
+
+		<h1><a href="./">Camagru</span></a></h1>
+
+		<nav>
+			<a href="./">Home</a>
+			<a href="#" class="selected">Gallery</a>
+		</nav>
+
+		<ul>
+			<li><a href="#">Login</a></li>
+			<li><a href="#">Sign up</a></li>
+		</ul>
+
+	</div>
+</header>
