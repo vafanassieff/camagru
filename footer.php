@@ -14,17 +14,11 @@
 			<div class="footer-left">
 
 				<p class="footer-links">
-					<a href="#">Home</a>
+					<a href="index.php">Home</a>
 					·
 					<a href="#">Gallery</a>
 					·
-					<a href="#">Pricing</a>
-					·
-					<a href="#">About</a>
-					·
-					<a href="#">Faq</a>
-					·
-					<a href="#">Contact</a>
+					<a href="mailto:contact@camagru.com">Contact</a>
 				</p>
 
 				<p>Camagru &copy; 2017</p>
