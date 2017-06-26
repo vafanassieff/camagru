@@ -9,7 +9,7 @@ html{
    	min-height: 100%;
 	margin:0;
 	padding:0;
-	background-image: url('../img/index-background.jpg');
+	background-image: url('../asset/img/index-background.jpg');
 	background-repeat:no-repeat;
 	background-position:center;
 	background-size: cover !important;
@@ -29,6 +29,7 @@ html{
 }
 
 .index-title{
+	position: absolute;
 	font-size: 50px;
 	color: white;
 	margin-left: auto;
@@ -39,13 +40,12 @@ html{
 
 .body-general
 {
-	background-color:pink;
+	background-color: #292c2f;
    	overflow: hidden;
 	height: 1500px;
    	min-height: 100%;
 	margin:0;
 	padding:0;
-	background-image: url('../img/register-background.jpg');
 	background-repeat:no-repeat;
 	background-position:center;
 	background-size: cover !important;
@@ -260,7 +260,7 @@ footer{
     margin-bottom: 15px;
 }
 .form-style-10 h1{
-    background: #2A88AD;
+    background: #608bd2;
     padding: 20px 30px 15px 30px;
     margin: -30px -30px 30px -30px;
     border-radius: 10px 10px 0 0;
@@ -268,11 +268,12 @@ footer{
     -moz-border-radius: 10px 10px 0 0;
     color: #fff;
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.12);
-    font: normal 30px 'Bitter', serif;
+    font: normal 30px;
+	font-family: 'Open Sans', sans-serif;
     -moz-box-shadow: inset 0px 2px 2px 0px rgba(255, 255, 255, 0.17);
     -webkit-box-shadow: inset 0px 2px 2px 0px rgba(255, 255, 255, 0.17);
     box-shadow: inset 0px 2px 2px 0px rgba(255, 255, 255, 0.17);
-    border: 1px solid #257C9E;
+    border: 1px solid #608bd2;
 	text-align: center;
 }
 .form-style-10 h1 > span{
@@ -319,23 +320,24 @@ footer{
 }
 .form-style-10 input[type="button"],
 .form-style-10 input[type="submit"]{
-    background: #2A88AD;
+    background: #608bd2;
     padding: 8px 20px 8px 20px;
     border-radius: 5px;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     color: #fff;
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.12);
-    font: normal 30px 'Bitter', serif;
+    font: normal 30px;
+	font-family: 'Open Sans', sans-serif;
     -moz-box-shadow: inset 0px 2px 2px 0px rgba(255, 255, 255, 0.17);
     -webkit-box-shadow: inset 0px 2px 2px 0px rgba(255, 255, 255, 0.17);
     box-shadow: inset 0px 2px 2px 0px rgba(255, 255, 255, 0.17);
-    border: 1px solid #257C9E;
+    border: 1px solid #608bd2;
     font-size: 15px;
 }
 .form-style-10 input[type="button"]:hover,
 .form-style-10 input[type="submit"]:hover{
-    background: #2A6881;
+    background: #608bd2;
     -moz-box-shadow: inset 0px 2px 2px 0px rgba(255, 255, 255, 0.28);
     -webkit-box-shadow: inset 0px 2px 2px 0px rgba(255, 255, 255, 0.28);
     box-shadow: inset 0px 2px 2px 0px rgba(255, 255, 255, 0.28);
@@ -343,8 +345,8 @@ footer{
 .form-style-10 .privacy-policy{
     float: right;
     width: 250px;
-    font: 12px Arial, Helvetica, sans-serif;
-    color: #4D4D4D;
+    font-family: 'Open Sans', sans-serif;
+    color: #608bd2;
     margin-top: 10px;
     text-align: right;
 }

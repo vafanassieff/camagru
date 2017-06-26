@@ -21,7 +21,7 @@
 		</nav>
 
 		<ul>
-			<li><a href="#">Login</a></li>
+			<li><a href="login.php">Login</a></li>
 			<li><a href="register.php">Sign up</a></li>
 		</ul>
 

@@ -15,5 +15,3 @@ unset($_POST['mail']);
 unset($_POST['pwd1']);
 unset($_POST['pwd2']);
 header('Location: ./index.php');
-
-?>
