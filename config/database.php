@@ -1,7 +1,7 @@
 <?php
 
-$DB_DSN = "mysql:host=localhost";
+$DB_DSN = "mysql:host=localhost:8889";
 $DB_USER = 'root';
-$DB_PASSWORD = 'toor';
+$DB_PASSWORD = 'root';
 
 ?>
