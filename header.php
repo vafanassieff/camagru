@@ -1,5 +1,6 @@
 <?php
 	session_start();
+	date_default_timezone_set('CET');
 ?>
 <head>
   <meta charset="utf-8">
@@ -21,8 +22,20 @@
 		</nav>
 
 		<ul>
-			<li><a href="login.php">Login</a></li>
-			<li><a href="register.php">Sign up</a></li>
+			<?php 
+			echo $_SESSION['user'];
+			if($_SESSION['user'])
+			{
+				echo '<li><a href="logout.php">Logout</a></li>';
+				echo '<li><a href="account.php">Account</a></li>';
+			}
+			else
+			{
+				echo '<li><a href="login.php">Login</a></li>';
+				echo '<li><a href="register.php">Sign up</a></li>';
+			}
+			?>
+
 		</ul>
 
 	</div>

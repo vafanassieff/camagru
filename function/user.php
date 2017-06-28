@@ -38,15 +38,28 @@ function find_same_mail($mail){
 
 function check_mail($mail){
 	if (!filter_var($mail, FILTER_VALIDATE_EMAIL)) 
-	{
 		return (1);
-	}
 	else
 		return(0);
 }
 
 function password_strengh($password){
-	return(0);
+	if (strlen($password) < 8)
+	{
+       return(1);
+    }
+
+    else if (!preg_match("#[0-9]+#", $password))
+	{
+       return(1);
+    }
+
+    else if (!preg_match("#[a-zA-Z]+#", $password))
+	{
+        return(1);
+    }     
+	else
+		return(0);
 }
 
 function same_password($pwd, $pwd2){
@@ -54,6 +67,31 @@ function same_password($pwd, $pwd2){
 		return(0);
 	else
 		return (1);
+}
+
+function send_email_token($mail, $token, $name){
+
+	global $db;
+
+	$req = $db->prepare("SELECT `id` FROM `camagru`.`users` WHERE name = :name");
+	$req->bindParam(':name', $name);
+	$req->execute();
+
+	$db_id = $req->fetch(PDO::FETCH_ASSOC);
+	$id = $db_id['id'];
+	$to = $mail;
+	$subject = "Activation of your Camagru Account";
+	$body = 'Hello '.$name.' Your Activation Code is '.$token.'\n Please Click On This link  \n http://localhost:8080/camagru/verify.php?id='.$id.'&code='.$token.' \n to activate your account.';
+	
+	$message = '<html><body>';
+	$message .= 'Hello '.$name.' <br>';
+	$message .= 'Please Click On This <a href = "http://localhost:8080/camagru/verify.php?id='.$id.'&token='.$token.'">link</a> to activate your account.';
+	$message .= '</body></html>';
+	$headers = "From: Camagru@camagru.com \r\n";
+ 	$headers .= "MIME-Version: 1.0\r\n";
+ 	$headers .= "Content-Type: text/html; charset=UTF-8\r\n";
+	mail($to,$subject,$message,$headers);
+	
 }
 
 function add_user_to_db($name, $mail, $password, $password2){
@@ -90,18 +128,7 @@ function add_user_to_db($name, $mail, $password, $password2){
 			':mail' => $mail,
 			':pass' => hash('whirlpool', $password),
 			':token' => $token));
+		send_email_token($mail, $token, $name);
 		header('Location: ../index.php');
 	}
-}
-
-function log_user($login, $pwd){
-
-	global $db;
-
-	$req = $db->prepare("SELECT * FROM `users` WHERE name = 'toto'");
-	$req->execute(array(
-		':name' => $name,
-		':mail' => $mail,
-		':pass' => hash(whirlpool, $password),
-		':token' => $token));
 }
