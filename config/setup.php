@@ -2,6 +2,7 @@
 include_once("database.php");
 include_once("mysql.php");
 
+	$db = getBdd();
 	echo "Init Database : ";
 		$db->query('CREATE DATABASE IF NOT EXISTS `camagru`');
 	echo "OK </br>";

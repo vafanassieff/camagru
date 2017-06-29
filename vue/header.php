@@ -23,9 +23,9 @@
 
 		<ul>
 			<?php 
-			echo $_SESSION['user'];
 			if($_SESSION['user'])
 			{
+				echo '<a href="wesh" class="selected">'.$_SESSION['user'].'</a>';
 				echo '<li><a href="logout.php">Logout</a></li>';
 				echo '<li><a href="account.php">Account</a></li>';
 			}

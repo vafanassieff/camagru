@@ -1,6 +1,6 @@
 <?php
 
-require('../config/mysql.php');
+require('./config/mysql.php');
 
 function create_token(){
 	$length = 64;
@@ -10,7 +10,7 @@ function create_token(){
 
 function find_same_user($name){
 
-	global $db;
+	$db = getBdd();
 
 	$req = $db->prepare("SELECT `name` FROM `camagru`.`users` WHERE name = :name");
 	$req->bindParam(':name', $name);
@@ -24,7 +24,7 @@ function find_same_user($name){
 
 function find_same_mail($mail){
 
-	global $db;
+	$db = getBdd();
 
 	$req = $db->prepare("SELECT `mail` FROM `camagru`.`users` WHERE mail = :mail");
 	$req->bindParam(':mail', $mail);
@@ -36,6 +36,14 @@ function find_same_mail($mail){
         return(0);
 }
 
+function check_username($name){
+
+	if(ctype_alnum($name))
+		return(0);
+	else
+		return(1);
+}
+
 function check_mail($mail){
 	if (!filter_var($mail, FILTER_VALIDATE_EMAIL)) 
 		return (1);
@@ -45,19 +53,11 @@ function check_mail($mail){
 
 function password_strengh($password){
 	if (strlen($password) < 8)
-	{
        return(1);
-    }
-
-    else if (!preg_match("#[0-9]+#", $password))
-	{
+	else if (!preg_match("#[0-9]+#", $password))
        return(1);
-    }
-
     else if (!preg_match("#[a-zA-Z]+#", $password))
-	{
-        return(1);
-    }     
+        return(1);  
 	else
 		return(0);
 }
@@ -71,7 +71,7 @@ function same_password($pwd, $pwd2){
 
 function send_email_token($mail, $token, $name){
 
-	global $db;
+	$db = getBdd();
 
 	$req = $db->prepare("SELECT `id` FROM `camagru`.`users` WHERE name = :name");
 	$req->bindParam(':name', $name);
@@ -91,35 +91,26 @@ function send_email_token($mail, $token, $name){
  	$headers .= "MIME-Version: 1.0\r\n";
  	$headers .= "Content-Type: text/html; charset=UTF-8\r\n";
 	mail($to,$subject,$message,$headers);
-	
 }
 
-function add_user_to_db($name, $mail, $password, $password2){
+function add_user_to_db($name, $mail, $password, $password2, &$error){
 
-	global $db;
+	$db = getBdd();
 
 	if (same_password($password, $password2))
+		$error[] = "Password are not the same";
+	if (find_same_user($name))
+		$error[] = "User already exist";
+	if (find_same_mail($mail))
+		$error[] = "Email already used";
+	if (check_mail($mail))
+		$error[] = "Wrong mail fornat";
+	if (password_strengh($password))
+		$error[] = "Password is too weak, must be at least 8 char long and have letter and one number";
+	if (check_username($name))
+		$error[] = "Bad Username";
+	if ($error == "")
 	{
-		header("Location:../register.php?href=inscription&error=dif_pwd");
-	}
-	else if (find_same_user($name))
-	{
-		header("Location:../register.php?href=inscription&error=name_use");
-	}
-	else if (find_same_mail($mail))
-	{
-		header("Location:../register.php?href=inscription&error=mail_use");
-	}
-	else if (check_mail($mail))
-	{
-		header("Location:../register.php?href=inscription&error=bad_mail");
-	}
-
-	else if (password_strengh($password))
-	{
-		header("Location:../register.php?href=inscription&error=pwd_str");
-	}
-	else {
 		$token = create_token();
 		$req = $db->prepare("INSERT INTO `camagru`.`users` (`name`, `mail`, `password`, `token_verif`)
 								VALUES (:name, :mail, :pass, :token)");
@@ -129,6 +120,6 @@ function add_user_to_db($name, $mail, $password, $password2){
 			':pass' => hash('whirlpool', $password),
 			':token' => $token));
 		send_email_token($mail, $token, $name);
-		header('Location: ../index.php');
+		header('Location: ./verify.php?verif=mail');
 	}
 }

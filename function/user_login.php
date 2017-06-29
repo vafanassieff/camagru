@@ -1,9 +1,9 @@
 <?php
-	require('../config/mysql.php');
 	session_start();
-	function log_user($login, $password){
+	require('../config/mysql.php');
+function log_user($login, $password){
 
-	global $db;
+	$db = getBdd();
 
 	$pwd = hash('whirlpool', $password);
 	$verified = '42';
