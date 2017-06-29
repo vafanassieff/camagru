@@ -1,5 +1,10 @@
 <?php
 include('./vue/header.php');
 include('./vue/footer.php');
-require('./vue/vueLogin.php');
+
+if ($_GET['submit'] == 'Reset Password')
+	include('./vue/vueResetpwd.php');
+else
+	include('./vue/vueLogin.php');
+
 ?>

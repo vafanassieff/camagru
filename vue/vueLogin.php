@@ -15,11 +15,12 @@
 						 	<input type="submit" name="submit" value="OK"/>
 					</center>
 				<div class="button-section">
-     				<center>
-						 <br/>
-					 		<input type="submit" name="submit" value="Reset Password"/>
-					</center>
     			</div>
+			</form>
+			</form>
+				<form METHOD="LINK" action="./login.php?submit=reset">
+				 <br/>
+				<center><input type="submit" name="submit" value="Reset Password"/></center>
 			</form>
 		</div>
 	</body>
