@@ -3,7 +3,7 @@
 	<body class="body-general" background="./asset/img/login-background.jpg">
 		<div class="form-style-10">
 		<h1>Password Reset<span>Please enter your Mail</span></h1>
-			<form action="./function/user_reset.php" method="POST">
+			<form action="login.php" method="POST">
     			<div class="inner-wrap">
         			<label>Email adress<input type="text" name="mail" /></label>
     			</div>

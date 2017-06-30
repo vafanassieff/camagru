@@ -1,39 +1,37 @@
 <?php
+	include('user.php');
 	session_start();
-	require('../config/mysql.php');
-function log_user($login, $password){
 
-	$db = getBdd();
+	$error = "";
+	$_SESSION['user'] = "";
 
-	$pwd = hash('whirlpool', $password);
-	$verified = '42';
-
-	$req = $db->prepare("SELECT * FROM `camagru`.`users` WHERE name = :name AND token_verif = :token AND password = :password");
-	$req->bindParam(':name', $login);
-	$req->bindParam(':token', $verified);
-	$req->bindParam(':password', $pwd);
-	$req->execute();
-
-	if($req->rowCount() == 1)
+	if ($_POST['submit'] == "OK" && $_POST['mail'] == "")
 	{
-		return (TRUE); 
+		if (find_same_user($_POST['login']) == 0)
+		{
+			$error[] = 'Cant find the username';
+			return ;
+		}
+		else if (is_account_activated($_POST['login']) == FALSE)
+		{
+			$error[] = 'Email is not verified, please check your email and your spam folder';
+			return ;
+		}
+		else if (log_user($_POST['login'], $_POST['pwd']) == TRUE)
+		{
+			$_SESSION['user'] = $_POST['login'];
+			header('Location: ./index.php');
+		}
+		else
+		{
+			$_SESSION['user'] = "";
+			$error[] = 'An error as occured, please contact the admin';
+		}
+		unset($_POST['submit']);
 	}
-	else
-		return (FALSE);
-	}
-
-	if ($_POST['submit'] != "OK")
+		if (isset($_POST['mail']))
 	{
-		header('Location: ./index.php');
-	}
-
-	if (log_user($_POST['login'], $_POST['pwd']) == TRUE)
-	{
-		$_SESSION['user'] = $_POST['login'];
-		header('Location: ../index.php');
-	}
-	else
-	{
-		$_SESSION['user'] = "";
-		header('Location: ../login.php?fail=ultime');
+		send_mail_reset($_POST['mail']);
+		header('Location: ./verify.php?verif=reset');
+		unset($_POST['mail']);
 	}

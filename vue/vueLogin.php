@@ -3,9 +3,9 @@
 	<body class="body-general" background="./asset/img/login-background.jpg">
 		<div class="form-style-10">
 		<h1>Sign In<span>Please enter your credidential</span></h1>
-			<form action="./function/user_login.php" method="POST">
+			<form action="login.php" method="POST">
     			<div class="inner-wrap">
-        			<label>Login name or email adress<input type="text" name="login" /></label>
+        			<label>Login<input type="text" name="login" /></label>
     			</div>
         		<div class="inner-wrap">
         			<label>Password <input type="password" name="pwd" /></label>
@@ -22,6 +22,7 @@
 				 <br/>
 				<center><input type="submit" name="submit" value="Reset Password"/></center>
 			</form>
+			<?php print_error($error);?>
 		</div>
 	</body>
 </html>

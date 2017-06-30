@@ -2,6 +2,15 @@
 
 require('./config/mysql.php');
 
+function print_error($error){
+	if ($error == "")
+		return ;
+	echo '<br\>';
+	foreach ($error as $e){
+		echo '<center>'.$e.'</center>';
+	}
+}
+
 function create_token(){
 	$length = 64;
 	$token = bin2hex(random_bytes($length));
@@ -81,8 +90,6 @@ function send_email_token($mail, $token, $name){
 	$id = $db_id['id'];
 	$to = $mail;
 	$subject = "Activation of your Camagru Account";
-	$body = 'Hello '.$name.' Your Activation Code is '.$token.'\n Please Click On This link  \n http://localhost:8080/camagru/verify.php?id='.$id.'&code='.$token.' \n to activate your account.';
-	
 	$message = '<html><body>';
 	$message .= 'Hello '.$name.' <br>';
 	$message .= 'Please Click On This <a href = "http://localhost:8080/camagru/verify.php?id='.$id.'&token='.$token.'">link</a> to activate your account.';
@@ -104,9 +111,9 @@ function add_user_to_db($name, $mail, $password, $password2, &$error){
 	if (find_same_mail($mail))
 		$error[] = "Email already used";
 	if (check_mail($mail))
-		$error[] = "Wrong mail fornat";
+		$error[] = "Wrong mail format";
 	if (password_strengh($password))
-		$error[] = "Password is too weak, must be at least 8 char long and have letter and one number";
+		$error[] = "Password is too weak, must be at least 8 char long and have one letter and one number";
 	if (check_username($name))
 		$error[] = "Bad Username";
 	if ($error == "")
@@ -122,4 +129,86 @@ function add_user_to_db($name, $mail, $password, $password2, &$error){
 		send_email_token($mail, $token, $name);
 		header('Location: ./verify.php?verif=mail');
 	}
+}
+
+function log_user($login, $password){
+
+	$db = getBdd();
+
+	$pwd = hash('whirlpool', $password);
+	$verified = '42';
+
+	$req = $db->prepare("SELECT * FROM `camagru`.`users` WHERE name = :name AND token_verif = :token AND password = :password");
+	$req->bindParam(':name', $login);
+	$req->bindParam(':token', $verified);
+	$req->bindParam(':password', $pwd);
+	$req->execute();
+
+	if($req->rowCount() == 1)
+	{
+		return (TRUE); 
+	}
+	else
+		return (FALSE);
+}
+
+function is_account_activated($login){
+
+	$db = getBdd();
+	$verified = '42';
+
+	$req = $db->prepare("SELECT * FROM `camagru`.`users` WHERE name = :name AND token_verif = :token");
+	$req->bindParam(':name', $login);
+	$req->bindParam(':token', $verified);
+	$req->execute();
+
+	if($req->rowCount() == 1)
+		return (TRUE); 
+	else
+		return (FALSE);
+}
+
+function verify_user($id, $token) {
+
+	$db = getBdd();
+
+	$req = $db->prepare("SELECT * FROM `camagru`.`users` WHERE id = :id AND token_verif = :token");
+	$req->bindParam(':id', $id);
+	$req->bindParam(':token', $token);
+	$req->execute();
+
+	if($req->rowCount() == 1)
+	{
+		$verified = '42';
+		$req2 = $db->prepare("UPDATE `camagru`.`users` SET token_verif = :token WHERE id = :id");
+		$req2->bindParam(':token', $verified);
+		$req2->bindParam(':id', $id);
+		$req2->execute();
+		$success = 1;
+		return ($success);
+	}
+
+}
+
+function send_mail_reset($mail){
+
+	$token = create_token();
+
+	$db = getBdd();
+
+	$req = $db->prepare("UPDATE `camagru`.`users` SET token_verif = :token WHERE mail = :mail");
+	$req->bindParam(':mail', $mail);
+	$req->bindParam(':token', $token);
+	$req->execute();
+
+	$to = $mail;
+	$subject = "Camagru Password Recovery";
+	$message = '<html><body>';
+	$message .= 'Hello <br>';
+	$message .= 'Please Click On This <a href = "http://localhost:8080/camagru/reset.php?mail='.$mail.'&token='.$token.'">link</a> to reset your Camagru password';
+	$message .= '</body></html>';
+	$headers = "From: Camagru@camagru.com \r\n";
+ 	$headers .= "MIME-Version: 1.0\r\n";
+ 	$headers .= "Content-Type: text/html; charset=UTF-8\r\n";
+	mail($to,$subject,$message,$headers);
 }

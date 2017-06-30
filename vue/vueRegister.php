@@ -17,7 +17,7 @@
      				<center><input type="submit" name="submit" value="OK"/></center>
     			</div>
 			</form>
-			<?php print_login_error($error);?>
+			<?php print_error($error);?>
 		</div>
 	</body>
 </html>
