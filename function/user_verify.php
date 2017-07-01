@@ -12,9 +12,14 @@ function print_verif($state){
 		echo '<center><span>Your account has already been activated please <a href = "./login.php">login<a> to continue !</span></center>';
 }
 
-	if($_GET['verif'] == 'mail')
-		$state = 2;
-	if($_GET['verif'] == 'reset')
-		$state = 3;
+	if (isset($_GET['verif']))
+	{
+		if($_GET['verif'] == 'mail')
+			$state = 2;
+		if($_GET['verif'] == 'reset')
+			$state = 3;
+	}
 	else if (isset($_GET['id']) && isset($_GET['token']))
-		$state = verify_user($_GET['id'], $_GET['token']);
+			$state = verify_user($_GET['id'], $_GET['token']);
+	else
+		header("Location: ./index.php");

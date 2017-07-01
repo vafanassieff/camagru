@@ -2,10 +2,11 @@
 	include('user.php');
 	session_start();
 
-	$error = "";
-	$_SESSION['user'] = "";
+$error = array();
 
-	if ($_POST['submit'] == "OK" && $_POST['mail'] == "")
+if (isset($_POST['submit']) && empty($_POST['mail'])){
+
+	if ($_POST['submit'] == "OK")
 	{
 		if (find_same_user($_POST['login']) == 0)
 		{
@@ -27,11 +28,10 @@
 			$_SESSION['user'] = "";
 			$error[] = 'An error as occured, please contact the admin';
 		}
-		unset($_POST['submit']);
 	}
-		if (isset($_POST['mail']))
-	{
-		send_mail_reset($_POST['mail']);
-		header('Location: ./verify.php?verif=reset');
-		unset($_POST['mail']);
+}
+if (isset($_POST['mail']))
+{
+	send_mail_reset($_POST['mail']);
+	header('Location: ./verify.php?verif=reset');
 	}

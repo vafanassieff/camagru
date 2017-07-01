@@ -1,5 +1,6 @@
 <?php
-	session_start();
+	if(!isset($_SESSION)) 
+        session_start();  
 	date_default_timezone_set('CET');
 ?>
 <head>
@@ -23,7 +24,7 @@
 
 		<ul>
 			<?php 
-			if($_SESSION['user'])
+			if(isset($_SESSION['user']))
 			{
 				echo '<a href="wesh" class="selected">'.$_SESSION['user'].'</a>';
 				echo '<li><a href="logout.php">Logout</a></li>';

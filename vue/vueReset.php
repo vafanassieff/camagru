@@ -14,8 +14,6 @@
      				<center>
 						 	<input type="submit" name="submit" value="OK"/>
 					</center>
-				<div class="button-section">
-    			</div>
 			</form>
 		
 			<?php print_error($error);?>

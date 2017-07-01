@@ -116,7 +116,7 @@ function add_user_to_db($name, $mail, $password, $password2, &$error){
 		$error[] = "Password is too weak, must be at least 8 char long and have one letter and one number";
 	if (check_username($name))
 		$error[] = "Bad Username";
-	if ($error == "")
+	if (empty($error))
 	{
 		$token = create_token();
 		$req = $db->prepare("INSERT INTO `camagru`.`users` (`name`, `mail`, `password`, `token_verif`)
@@ -184,10 +184,9 @@ function verify_user($id, $token) {
 		$req2->bindParam(':token', $verified);
 		$req2->bindParam(':id', $id);
 		$req2->execute();
-		$success = 1;
-		return ($success);
+		return (1);
 	}
-
+	return (4);
 }
 
 function send_mail_reset($mail){
@@ -211,4 +210,45 @@ function send_mail_reset($mail){
  	$headers .= "MIME-Version: 1.0\r\n";
  	$headers .= "Content-Type: text/html; charset=UTF-8\r\n";
 	mail($to,$subject,$message,$headers);
+}
+
+function find_mail_token($mail, $token){
+
+	$db = getBdd();
+
+	$req = $db->prepare("SELECT * FROM `camagru`.`users` WHERE mail = :mail AND token_verif = :token");
+	$req->bindParam(':mail', $mail);
+	$req->bindParam(':token', $token);
+	$req->execute();
+
+	if($req->rowCount() == 1)
+		return (TRUE);
+	else
+		return (FALSE);
+}
+
+function update_password($password, $password2, $mail,  &$error){
+
+	if (same_password($password, $password2))
+		$error[] = "Password are not the same";
+	if (password_strengh($password))
+		$error[] = "Password is too weak, must be at least 8 char long and have one letter and one number";
+	if (empty($error))
+	{
+		$db = getBdd();
+		$verified = '42';
+		$pwd = hash('whirlpool', $password);
+
+		$req = $db->prepare("UPDATE `camagru`.`users` SET token_verif = :token WHERE mail = :mail");
+		$req->bindParam(':token', $verified);
+		$req->bindParam(':mail', $mail);
+		$req->execute();
+
+		$req2 = $db->prepare("UPDATE `camagru`.`users` SET password = :password WHERE mail = :mail");
+		$req2->bindParam(':password', $pwd);
+		$req2->bindParam(':mail', $mail);
+		$req2->execute();
+		header('Location: ./index.php?pass=changed');
+		session_destroy();
+	}
 }
