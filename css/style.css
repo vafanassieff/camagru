@@ -5,7 +5,7 @@ html{
 
 .index-body {
 	position: relative;
-   	height: 1500px;
+   	height: 100%;
    	min-height: 100%;
 	margin:0;
 	padding:0;
@@ -42,7 +42,7 @@ html{
 {
 	background-color: #292c2f;
    	overflow: hidden;
-	height: 1500px;
+	height: 100%;
    	min-height: 100%;
 	margin:0;
 	padding:0;
@@ -246,7 +246,7 @@ footer{
     width:450px;
     padding:30px;
     margin:40px auto;
-    background: #FFF;
+    background: white;
     border-radius: 10px;
     -webkit-border-radius:10px;
     -moz-border-radius: 10px;
@@ -255,18 +255,14 @@ footer{
     -webkit-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.13);
 }
 .form-style-10 .inner-wrap{
-    background: #F8F8F8;
-    border-radius: 6px;
+    background: white;
     margin-bottom: 15px;
 }
 .form-style-10 h1{
     background: #608bd2;
     padding: 20px 30px 15px 30px;
     margin: -30px -30px 30px -30px;
-    border-radius: 10px 10px 0 0;
-    -webkit-border-radius: 10px 10px 0 0;
-    -moz-border-radius: 10px 10px 0 0;
-    color: #fff;
+    color: white;
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.12);
     font: normal 30px;
 	font-family: 'Open Sans', sans-serif;
@@ -307,7 +303,7 @@ footer{
     border-radius: 6px;
     -webkit-border-radius:6px;
     -moz-border-radius:6px;
-    border: 2px solid #fff;
+    border: 2px solid white;
     box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.33);
     -moz-box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.33);
     -webkit-box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.33);
@@ -325,7 +321,7 @@ footer{
     border-radius: 5px;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
-    color: #fff;
+    color: white;
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.12);
     font: normal 30px;
 	font-family: 'Open Sans', sans-serif;
@@ -341,12 +337,4 @@ footer{
     -moz-box-shadow: inset 0px 2px 2px 0px rgba(255, 255, 255, 0.28);
     -webkit-box-shadow: inset 0px 2px 2px 0px rgba(255, 255, 255, 0.28);
     box-shadow: inset 0px 2px 2px 0px rgba(255, 255, 255, 0.28);
-}
-.form-style-10 .privacy-policy{
-    float: right;
-    width: 250px;
-    font-family: 'Open Sans', sans-serif;
-    color: #608bd2;
-    margin-top: 10px;
-    text-align: right;
 }
