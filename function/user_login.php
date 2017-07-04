@@ -3,6 +3,7 @@
 	session_start();
 
 $error = array();
+$id = 0;
 
 if (isset($_POST['submit']) && empty($_POST['mail'])){
 
@@ -18,8 +19,9 @@ if (isset($_POST['submit']) && empty($_POST['mail'])){
 			$error[] = 'Email is not verified, please check your email and your spam folder';
 			return ;
 		}
-		else if (log_user($_POST['login'], $_POST['pwd']) == TRUE)
+		else if (log_user($_POST['login'], $_POST['pwd'], $id) == TRUE)
 		{
+			$_SESSION['id'] = $id;
 			$_SESSION['user'] = $_POST['login'];
 			header('Location: ./index.php');
 		}

@@ -20,7 +20,10 @@
 		<nav>
 			<a href="./">Home</a>
 			<a href="#" class="selected">Gallery</a>
+			<?php if(isset($_SESSION['user']))
+				echo '<a href="./montage.php" class="selected">Picture</a>';?>
 		</nav>
+		
 
 		<ul>
 			<?php 

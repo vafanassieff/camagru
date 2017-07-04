@@ -131,7 +131,7 @@ function add_user_to_db($name, $mail, $password, $password2, &$error){
 	}
 }
 
-function log_user($login, $password){
+function log_user($login, $password, &$id){
 
 	$db = getBdd();
 
@@ -146,7 +146,13 @@ function log_user($login, $password){
 
 	if($req->rowCount() == 1)
 	{
-		return (TRUE); 
+		$req = $db->prepare("SELECT `id` FROM `camagru`.`users` WHERE name = :name");
+		$req->bindParam(':name', $login);
+		$req->execute();
+
+		$db_id = $req->fetch(PDO::FETCH_ASSOC);
+		$id = $db_id['id'];
+		return (TRUE);
 	}
 	else
 		return (FALSE);
