@@ -24,4 +24,5 @@ include_once("mysql.php");
 		`timestamp` TIMESTAMP NOT NULL ,
 		UNIQUE (`id`)) ENGINE = InnoDB;');
 echo "OK </br>";
+mkdir('../content/');
 ?>
