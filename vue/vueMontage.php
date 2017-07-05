@@ -4,20 +4,34 @@
 	</script>
 	<body class="body-general" background="./asset/img/login-background.jpg">
 		<center>
-            <div class="montage">
-           <div class="camera">
-    <video id="video">Video stream not available.</video>
-    <button id="startbutton">Take photo</button> 
-  </div>
-  <canvas id="canvas">
-  </canvas>
-  <div class="output">
-    <img id="photo" alt="The screen capture will appear in this box."> 
-</div>
-		    </div>
-             <div class="side">
-            <h1>Previous Picture</h1>
-		    </div>
-        </center>
+      <div class="montage">
+        <div class="camera">
+          <video id="video">Video stream not available.</video>
+          <button id="startbutton">Take photo</button> 
+        </div>
+          <canvas id="canvas">
+          </canvas>
+      <div class="output">
+       <img id="photo" alt="The screen capture will appear in this box.">
+
+
+    </div>
+
+
+	<form action="./montage.php" method="POST">
+		<input type="hidden" name="img" id="imgb64">
+		<input type="submit" value="submit" onclick="testimg();";>
+	</form>
+	</div>
+
+  </form>
+  <div class="side">
+    <h1>Previous Picture</h1>
+		  </div>
+      </center>
+
+
 	</body>
+
+
 </html>
