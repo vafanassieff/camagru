@@ -24,6 +24,7 @@
   	<div class="side">
     	<h1>Previous Picture</h1>
 		<?last_captured_img($_SESSION['id']);?>
+		
 	</div>
 
 </center>

@@ -11,7 +11,7 @@
 		$req->execute();
 		$result = $req->fetchAll();
 		foreach ($result as $elem){
-			echo '<img class="last-image" src="'.$elem['path'].'"> ';
+			echo '<img class="last-image" src="' . $elem['path'] .'"> ';
 			echo '<br>';
 		}
 	}

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<body class="index-body">
+<body class="body-general" background="./asset/img/index-background.jpg">
 
 </body>
 </html>

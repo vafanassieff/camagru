@@ -1,7 +1,10 @@
 <!DOCTYPE html>
-<html>
-<body class="index-body">
-
+<body class="body-general">
+	<?php display_gallery();?>
+	<?php display_gallery();?>
+	<?php display_gallery();?>
+	<?php display_gallery();?>
+	<div class="clearfix"></div>
 </body>
 
 </html>
