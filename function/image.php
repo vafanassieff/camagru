@@ -21,7 +21,7 @@ function base64_to_png($data){
 								VALUES (:user_id, :name, :comment, :path)");
 	$req->execute(array(
 		':user_id' => $id,
-		':name' => $login,
+		':name' => $unique_id,
 		':comment' => "",
 		':path' => $filepath));
 }
