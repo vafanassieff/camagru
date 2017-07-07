@@ -190,7 +190,8 @@ function verify_user($id, $token) {
 		$req2->bindParam(':token', $verified);
 		$req2->bindParam(':id', $id);
 		$req2->execute();
-		mkdir('./content/'.$id);
+		if (!is_dir('./content/'.$id))
+			mkdir('./content/'.$id);
 		return (1);
 	}
 	return (4);

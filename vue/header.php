@@ -11,6 +11,7 @@ date_default_timezone_set('CET');
   		<link rel="stylesheet" type="text/css" href="css/form.css">
 		<link rel="stylesheet" type="text/css" href="css/footer.css">
 		<link rel="stylesheet" type="text/css" href="css/header.css">
+		<link rel="stylesheet" type="text/css" href="css/social-media.css">
   		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans">
   		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
   <title>Camagru</title>
