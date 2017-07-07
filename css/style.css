@@ -74,7 +74,8 @@ div.gallery-large img {
 .responsive-large {
     margin: 0 auto;
     padding: 0 6px;
-    width: 80%;
+    width: 66%;
+    max-width:1000px;
 }
 
 div.desc {
