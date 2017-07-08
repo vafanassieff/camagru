@@ -1,7 +1,18 @@
-﻿<footer class="footer-distributed">
+﻿<div class="clear"></div>
+<footer class="footer-distributed">
 	<div class="footer-right">
-		<a href="#"><i class="fa fa-facebook"></i></a>
-		<a href="#"><i class="fa fa-twitter"></i></a>
+		<a href="#"><span class="fa-stack fa-lg">
+  			<i class="fa fa-square-o fa-stack-2x"></i>
+  			<i class="fa fa-facebook fa-stack-1x"></i></a>
+		<a href="#">
+			<span class="fa-stack fa-lg">
+  			<i class="fa fa-square-o fa-stack-2x"></i>
+  			<i class="fa fa-twitter fa-stack-1x"></i></a>
+		<a href="#">
+			<span class="fa-stack fa-lg">
+  			<i class="fa fa-square-o fa-stack-2x"></i>
+  			<i class="fa fa-google-plus fa-stack-1x"></i></a>
+	
 	</div>
 	<div class="footer-left">
 		<p class="footer-links">
