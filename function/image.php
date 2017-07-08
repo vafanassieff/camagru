@@ -6,7 +6,6 @@ function base64_to_png($data){
 
 	$db = getBdd();
 	$id = $_SESSION['id'];
-	$login = $_SESSION['user'];
 
 	list($type, $data) = explode(';', $data);
 	list(, $data)      = explode(',', $data);
@@ -17,13 +16,15 @@ function base64_to_png($data){
 
 	file_put_contents($filepath, $data);
 
-	$req = $db->prepare("INSERT INTO `camagru`.`images` (`user_id`, `name`, `comment`, `path`)
-								VALUES (:user_id, :name, :comment, :path)");
+	$req = $db->prepare("INSERT INTO `camagru`.`images` (`user_id`, `name`, `path`, `comment`, `nb_comment` ,`nb_like`)
+								VALUES (:user_id, :name, :path, :comment, :nb_comment, :nb_like)");
 	$req->execute(array(
 		':user_id' => $id,
 		':name' => $unique_id,
-		':comment' => "",
-		':path' => $filepath));
+		':path' => $filepath,
+		':comment' => "a:0:{}",
+		':nb_comment' => 0,
+		':nb_like' => 0));
 }
 
 function display_gallery(){
@@ -36,15 +37,14 @@ function display_gallery(){
 	foreach ($result as $elem){
 		$id = explode('/', $elem['path']);
 		$id = $id[2];
-		echo '<div class="responsive">';
-		echo '<div class="gallery">';
-		echo '<a href="./gallery.php?action=img&id='. $elem['name'] .'+'. $id .'">';
-		echo '<img src="' . $elem['path'] . '">';
-		echo '</a>';
-		echo '<div class="desc">toto';
-		echo '</div>';
-		echo '</div>';
-		echo '</div>';
+		echo '<div class="responsive">
+							<div class="gallery">
+									<a href="./gallery.php?action=img&id='. $elem['name'] .'+'. $id .'">
+									<img src="' . $elem['path'] . '">
+									</a>
+									<div class="desc">toto</div>
+							</div>
+					</div>';
 	}
 }
 
@@ -53,20 +53,17 @@ function display_one_image($id){
 	$path = './content/'. $id[1] . '/'. $id[0] . '.png';
 	$actual_link = $_SERVER[HTTP_HOST] .$_SERVER[REQUEST_URI];
 
-	echo '<div class="responsive-large">';
-	echo '<div class="gallery-large">';
-	echo '<img src="' . $path . '">';
-	echo '<div class="social-media">';
-		social_media($actual_link);
-	echo '</div>';
-	echo '<div class="desc">';
-		print_comment($id[0]);
-	echo '</div>';
-	if (isset($_SESSION['user']))
-		comment_form();
-	echo '</div>';
-	echo '</div>';
-	echo '<div class="clear"></div>';
+	echo '<div class="responsive-large">
+				<div class="gallery-large">
+				<img src="' . $path . '">
+				<ul class="comment-section">';
+				print_comment($id);
+	if(isset($_SESSION['user']));
+				comment_form();
+	echo '</ul>
+				</div>
+				</div>
+				<div class="clear"></div>';
 }
 
 function social_media($link){

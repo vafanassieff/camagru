@@ -6,25 +6,9 @@
 			if ($_GET['action'] == "img" && isset($_GET['id']))
 				display_one_image($_GET['id']);
 		}
-		else{
+		else
 			display_gallery();
-			display_gallery();
-			display_gallery();
-			display_gallery();
-			display_gallery();
-			display_gallery();
-			display_gallery();
-			display_gallery();
-			display_gallery();
-			display_gallery();
-			display_gallery();
-			display_gallery();
-			display_gallery();
-			display_gallery();
-			display_gallery();
-			display_gallery();
-			display_gallery();
-			}?>
+			?>
 	<div class="clearfix"></div>
 </body>
 

@@ -12,40 +12,53 @@ function get_comment( $unique_id){
 	return ($comment[0]['comment']);
 	}
 
-function add_comment($new_comment , $unique_id){
+function add_comment($new_comment , $id){
 
-	$db = getBdd();
+	$db = getBdd(); 
 	$login = $_SESSION['user'];
-	$comment = get_comment($unique_id);
+	$user_id = $_SESSION['id'];
+	$time = time();
+	$unserialized_comment = get_comment($id);
 
-	unserialize($comment);
-	$comment = (array)$comment;
-	$comment[] = $new_comment;
-	$comment = serialize($comment);
+	$comment_array = unserialize($unserialized_comment);
+	$new_com = ["comment" => $new_comment, "author" => $login, "timestamp" => $time, "user_id" => $user_id, ];
+	$comment_array[] = $new_com;
+	$serialized_comment = serialize($comment_array);
 
 	$req = $db->prepare("UPDATE `camagru`.`images` SET `comment` = :comment WHERE name = :unique_id");
-	$req->bindParam(':unique_id', $unique_id);
-	$req->bindParam(':comment' , $comment);
+	$req->bindParam(':unique_id', $id);
+	$req->bindParam(':comment' , $serialized_comment);
 	$req->execute();
 }
 
 function print_comment($id){
 
-	$comment = get_comment($id);
-	$print = unserialize($comment);
-	$print2 = unserialize($print[0]);
-	print_r($print2);
+	$serialized_comment = get_comment($id[0]);
+	$unserialized_comment = unserialize($serialized_comment);
+	foreach ($unserialized_comment as $comment){
+		$date = date('m/d/Y H:i', $comment['timestamp']);
+		if ($comment['user_id'] == $id[1])
+			echo '<li class="comment author-comment">';
+		else
+			echo '<li class="comment user-comment">';
+        echo  '<div class="info">
+                    <a>'.$comment['author'].'</a>
+                    <span>'.$date.'</span>
+                </div>
+                <a class="avatar"><img src="" /> </a>
+                <p>'.$comment['comment'].'</p>
+			</li>';
+	}
 }
 
 function comment_form(){
-
-	echo '<div class="form-style-10">';
-	echo '<textarea name="comment" form="commentform" rows="4" cols="50">Enter text here...</textarea>';
-	echo '		<form action="gallery.php?' . $_SERVER['QUERY_STRING'] .'" method="POST" id="commentform">
-    			<div class="button-section">
-     				<center><input type="submit" name="submit" value="OK"/></center>
-				<div class="button-section">
-    			</div>
-			</div>';
+	echo '<li class="write-new">
+                <form action="gallery.php?' . $_SERVER['QUERY_STRING'] .'" method="POST">
+                    <textarea name="comment" placeholder="Write your comment here" ></textarea>
+                    <div>
+                       <input type="submit" name="submit" value="OK"/>
+                    </div>
+                </form>
+            </li>';
 }
 
