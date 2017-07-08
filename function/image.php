@@ -34,15 +34,18 @@ function display_gallery(){
 	$req = $db->prepare("SELECT * FROM `camagru`.`images` ORDER BY timestamp DESC");
 	$req->execute();
 	$result = $req->fetchAll();
+	
 	foreach ($result as $elem){
 		$id = explode('/', $elem['path']);
 		$id = $id[2];
+		$nb_com = get_comment_count($elem['name']);
+
 		echo '<div class="responsive">
 							<div class="gallery">
 									<a href="./gallery.php?action=img&id='. $elem['name'] .'+'. $id .'">
 									<img src="' . $elem['path'] . '">
 									</a>
-									<div class="desc">toto</div>
+									<div class="desc">'. $nb_com[0]['nb_comment'] .'</div>
 							</div>
 					</div>';
 	}

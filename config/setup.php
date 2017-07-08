@@ -20,7 +20,7 @@ include_once("mysql.php");
 		`user_id` INT NOT NULL ,
 		`name` VARCHAR(255) NOT NULL ,
 		`path` VARCHAR(255) NOT NULL ,
-		`timestamp` TIMESTAMP NOT NULL ,
+		`timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 		`comment` TEXT NOT NULL,
 		`nb_comment` INT NOT NULL ,
 		`nb_like` INT NOT NULL ,

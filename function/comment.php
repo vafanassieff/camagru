@@ -33,13 +33,32 @@ function add_comment($new_comment , $id){
 	$req->bindParam(':unique_id', $unique_id);
 	$req->bindParam(':comment' , $serialized_comment);
 	if ($req->execute())
+	{
+		count_comment($unique_id);
 		if($creator_id != $user_id)
 			mail_comment($new_comment , $creator_id , $login);
+	}
 }
 
-function count_comment(){
+function count_comment($unique_id){
 
+	$db = getBdd();
 
+	$req = $db->prepare("UPDATE `camagru`.`images` SET nb_comment = nb_comment + 1 WHERE name = :unique_id");
+	$req->bindParam(':unique_id', $unique_id);
+	$req->execute();
+}
+
+function get_comment_count($unique_id){
+
+	$db = getBdd();
+
+	$req = $db->prepare("SELECT nb_comment FROM `camagru`.`images` WHERE name = :unique_id");
+	$req->bindParam(':unique_id', $unique_id);
+	$req->execute();
+
+	$test = $req->fetchAll();
+	return ($test);
 }
 
 function mail_comment($new_comment, $user_id, $user_name){
