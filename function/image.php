@@ -49,21 +49,43 @@ function display_gallery(){
 }
 
 function display_one_image($id){
+
 	$id = explode(' ', $id);
 	$path = './content/'. $id[1] . '/'. $id[0] . '.png';
 	$actual_link = $_SERVER[HTTP_HOST] .$_SERVER[REQUEST_URI];
 
 	echo '<div class="responsive-large">
-				<div class="gallery-large">
+			<div class="gallery-large">
 				<img src="' . $path . '">
-				<ul class="comment-section">';
+					<center>';
+				social_media($actual_link);
+	echo '</center>
+			<ul class="comment-section">';
 				print_comment($id);
-	if(isset($_SESSION['user']));
+	if(isset($_SESSION['user']))
 				comment_form();
 	echo '</ul>
-				</div>
-				</div>
-				<div class="clear"></div>';
+		</div>
+		</div>
+		<div class="clear"></div>';
+}
+
+function find_image($id){
+
+	$db = getBdd();
+	$id = explode(" ", $id);
+	$unique_id = $id[0];
+	$user_id = $id[1];
+
+	$req = $db->prepare("SELECT id FROM `camagru`.`images` WHERE name = :unique_id AND user_id = :user_id");
+	$req->bindParam(':unique_id', $unique_id);
+	$req->bindParam(':user_id', $user_id);
+	$req->execute();
+	
+	if ($req->rowCount() == 1)
+		return (TRUE);
+	else
+		return (FALSE);
 }
 
 function social_media($link){

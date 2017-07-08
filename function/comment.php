@@ -14,11 +14,15 @@ function get_comment( $unique_id){
 
 function add_comment($new_comment , $id){
 
-	$db = getBdd(); 
+	$db = getBdd();
 	$login = $_SESSION['user'];
 	$user_id = $_SESSION['id'];
+	$id_temp = explode(" ", $id);
+	$unique_id = $id_temp[0];
+	$creator_id = $id_temp[1];
+
 	$time = time();
-	$unserialized_comment = get_comment($id);
+	$unserialized_comment = get_comment($unique_id);
 
 	$comment_array = unserialize($unserialized_comment);
 	$new_com = ["comment" => $new_comment, "author" => $login, "timestamp" => $time, "user_id" => $user_id, ];
@@ -26,18 +30,57 @@ function add_comment($new_comment , $id){
 	$serialized_comment = serialize($comment_array);
 
 	$req = $db->prepare("UPDATE `camagru`.`images` SET `comment` = :comment WHERE name = :unique_id");
-	$req->bindParam(':unique_id', $id);
+	$req->bindParam(':unique_id', $unique_id);
 	$req->bindParam(':comment' , $serialized_comment);
+	if ($req->execute())
+		if($creator_id != $user_id)
+			mail_comment($new_comment , $creator_id , $login);
+}
+
+function count_comment(){
+
+
+}
+
+function mail_comment($new_comment, $user_id, $user_name){
+
+	$db = getBdd();
+	
+	$req = $db->prepare("SELECT * FROM `camagru`.`users` WHERE id = :user_id");
+	$req->bindParam(':user_id', $user_id);
 	$req->execute();
+
+	$result= $req->fetchAll();
+	$mail = $result[0]['mail'];
+	$name = $result[0]['name'];
+	$actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+
+	$to = $mail;
+	$subject = "Your image has been commented !";
+	$message = '<html><body>';
+	$message .= 'Hello ' . $name .'<br>';
+	$message .= 'A new comment ha been added on your <a href = "'. $actual_link .'">picture</a> by the user named ' . $user_name . '<br><br><br>';
+	$message .= 'The comment is ' . $new_comment . '<br>';
+	$message .= '</body></html>';
+	$headers = "From: Camagru@camagru.com \r\n";
+ 	$headers .= "MIME-Version: 1.0\r\n";
+ 	$headers .= "Content-Type: text/html; charset=UTF-8\r\n";
+	mail($to,$subject,$message,$headers);
 }
 
 function print_comment($id){
 
-	$serialized_comment = get_comment($id[0]);
+	$img_id = $id[0];
+	$user_id = $id[1];
+
+	$serialized_comment = get_comment($img_id);
 	$unserialized_comment = unserialize($serialized_comment);
-	foreach ($unserialized_comment as $comment){
+
+	foreach ($unserialized_comment as $comment)
+	{
 		$date = date('m/d/Y H:i', $comment['timestamp']);
-		if ($comment['user_id'] == $id[1])
+
+		if ($comment['user_id'] == $user_id)
 			echo '<li class="comment author-comment">';
 		else
 			echo '<li class="comment user-comment">';
