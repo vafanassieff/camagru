@@ -23,6 +23,7 @@ include_once("mysql.php");
 		`timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 		`comment` TEXT NOT NULL,
 		`nb_comment` INT NOT NULL ,
+		`like_array` TEXT NOT NULL,
 		`nb_like` INT NOT NULL ,
 		UNIQUE (`id`)) ENGINE = InnoDB;');
 echo "OK </br>";

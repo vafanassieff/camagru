@@ -15,8 +15,6 @@
 			<input type="hidden" name="img" id="imgb64"/>
 			<input type="submit" value="Submit" onclick="testimg();"/>
 		</form>
-			<br>
-				<br>	<br>	<br>	<br>	<br>	<br>	<br>	<br>	<br>	<br>	<br>	<br>	<br>	<br>
 	</div>
   	<div class="side">
     	<h1>Previous Picture</h1>

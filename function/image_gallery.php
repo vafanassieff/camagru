@@ -3,11 +3,27 @@
 	include('image.php');
 	include('comment.php');
 
-	if (isset($_GET['id']))
+if (isset($_GET['action']))
+{
+	if ($_GET['action'] == "img")
 	{
-		if (find_image($_GET['id']) == FALSE)
+		if (isset($_GET['id']))
+		{
+			if (find_image($_GET['id']) == FALSE)
 			header('Location: ./index.php');
+		}
 	}
+	if ($_GET['action'] == "like")
+	{
+		if (isset($_GET['id']))
+		{
+			if (find_image($_GET['id']))
+				add_like($_GET['id']);
+			else
+				header('Location: ./index.php');
+		}
+	}
+}
 
 	if (isset($_POST['submit']))
 	{

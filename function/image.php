@@ -40,13 +40,17 @@ function display_gallery(){
 		$user_id = $id[2];
 		$nb_com = get_comment_count($elem['name']);
 		$link = './gallery.php?action=img&id='. $elem['name'] .'+'. $user_id;
+		$link_like = './gallery.php?action=like&id='. $elem['name'] .'+'. $user_id;
+		$nb_like = get_number_like($elem['name']);
+
 
 		echo '<div class="responsive">
 				<div class="gallery">
 					<a href="'. $link . '"><img src="' . $elem['path'] . '"></a>
 			<div class="desc">';
 	if(isset($_SESSION['user']))
-		echo '<a href="'. $link . '#comment"> <i class="fa fa-comments"></i></a> '. $nb_com[0]['nb_comment'] .' <i class="fa fa-heart" aria-hidden="true"></i> 0';
+		echo '<a href="'. $link . '#comment"><i class="fa fa-comments"></i></a> '. $nb_com[0]['nb_comment'] .' 
+		<a href="'. $link_like .'"><i class="fa fa-heart" aria-hidden="true"></i></a> ' . $nb_like;
 	else
 		echo '<i class="fa fa-comments"></i> '. $nb_com[0]['nb_comment'] .' <i class="fa fa-heart" aria-hidden="true"></i> 0';
 		echo '</div></div></div>';
@@ -91,6 +95,68 @@ function find_image($id){
 		return (TRUE);
 	else
 		return (FALSE);
+}
+
+function get_number_like($unique_id){
+
+	$db = getBdd();
+
+	$req = $db->prepare("SELECT nb_like FROM `camagru`.`images` WHERE name = :unique_id");
+	$req->bindParam(':unique_id', $unique_id);
+	$req->execute();
+
+	$result = $req->fetchAll();
+
+	return($result[0]['nb_like']);
+}
+
+function get_like_array($unique_id){
+
+	$db = getBdd();
+
+	$req = $db->prepare("SELECT like_array FROM `camagru`.`images` WHERE name = :unique_id");
+	$req->bindParam(':unique_id', $unique_id);
+	$req->execute();
+
+	$tmp = $req->fetchAll();
+	return ($tmp[0]['like_array']);
+}
+
+function add_like($id){
+
+	$db = getBdd();
+	$login = $_SESSION['user'];
+
+	$id_temp = explode(" ", $id);
+	$unique_id = $id_temp[0];
+	$like_serialized = get_like_array($unique_id);
+	$like_array = unserialize($like_serialized);
+	if (empty($like_array) == TRUE)
+		$like_array[] = $login;
+	if (in_array($login, $like_array) == TRUE)
+			header('Location: ./index.php');
+	else
+		$like_array[] = $login;
+	$like_serialized = serialize($like_array);
+
+	$req = $db->prepare("UPDATE `camagru`.`images` SET `like_array` = :like_array WHERE name = :unique_id");
+	$req->bindParam(':unique_id', $unique_id);
+	$req->bindParam(':like_array' , $like_serialized);
+	$req->execute();
+	update_nb_like($like_array, $unique_id);
+	header('Location: ./gallery.php');
+}
+
+function update_nb_like($like_array, $unique_id){
+
+	$db = getBdd();
+
+	$nb_like = count($like_array);
+
+	$req = $db->prepare("UPDATE `camagru`.`images` SET `nb_like` = :nb_like WHERE name = :unique_id");
+	$req->bindParam(':unique_id', $unique_id);
+	$req->bindParam(':nb_like' , $nb_like);
+	$req->execute();
 }
 
 function social_media($link){
