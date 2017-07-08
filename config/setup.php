@@ -20,8 +20,10 @@ include_once("mysql.php");
 		`user_id` INT NOT NULL ,
 		`name` VARCHAR(255) NOT NULL ,
 		`comment` TEXT NOT NULL,
+		`nb_comment` INT NOT NULL ,
 		`path` VARCHAR(255) NOT NULL ,
 		`timestamp` TIMESTAMP NOT NULL ,
+		`nb_like` INT NOT NULL ,
 		UNIQUE (`id`)) ENGINE = InnoDB;');
 echo "OK </br>";
 if (!is_dir('../content/'))
