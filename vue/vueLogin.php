@@ -1,7 +1,4 @@
-<!DOCTYPE html>
-<html>
-	<body class="body-general" background="./asset/img/login-background.jpg">
-		<div class="form-style-10">
+	<div class="form-style-10">
 		<h1>Sign In<span>Please enter your credidential</span></h1>
 			<form action="login.php" method="POST">
     			<div class="inner-wrap">
@@ -14,15 +11,12 @@
      				<center>
 						 	<input type="submit" name="submit" value="OK"/>
 					</center>
-				<div class="button-section">
-    			</div>
-			</form>
+				</div>
 			</form>
 				<form METHOD="LINK" action="./login.php?submit=reset">
-				 <br/>
+				 <br>
 				<center><input type="submit" name="submit" value="Reset Password"/></center>
 			</form>
-			<?php print_error($error);?>
-		</div>
-	</body>
-</html>
+			<?php if (empty(!$error))
+				{print_error($error);}?>
+</div>

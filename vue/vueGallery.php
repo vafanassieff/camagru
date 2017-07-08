@@ -1,5 +1,3 @@
-<!DOCTYPE html>
-<body class="body-general">
 	<?php 
 		if (isset($_GET['action']))
 		{
@@ -10,6 +8,3 @@
 			display_gallery();
 			?>
 	<div class="clearfix"></div>
-</body>
-
-</html>

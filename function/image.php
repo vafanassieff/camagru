@@ -37,17 +37,19 @@ function display_gallery(){
 	
 	foreach ($result as $elem){
 		$id = explode('/', $elem['path']);
-		$id = $id[2];
+		$user_id = $id[2];
 		$nb_com = get_comment_count($elem['name']);
+		$link = './gallery.php?action=img&id='. $elem['name'] .'+'. $user_id;
 
 		echo '<div class="responsive">
-							<div class="gallery">
-									<a href="./gallery.php?action=img&id='. $elem['name'] .'+'. $id .'">
-									<img src="' . $elem['path'] . '">
-									</a>
-									<div class="desc">'. $nb_com[0]['nb_comment'] .'</div>
-							</div>
-					</div>';
+				<div class="gallery">
+					<a href="'. $link . '"><img src="' . $elem['path'] . '"></a>
+			<div class="desc">';
+	if(isset($_SESSION['user']))
+		echo '<a href="'. $link . '#comment"> <i class="fa fa-comments"></i></a> '. $nb_com[0]['nb_comment'] .' <i class="fa fa-heart" aria-hidden="true"></i> 0';
+	else
+		echo '<i class="fa fa-comments"></i> '. $nb_com[0]['nb_comment'] .' <i class="fa fa-heart" aria-hidden="true"></i> 0';
+		echo '</div></div></div>';
 	}
 }
 

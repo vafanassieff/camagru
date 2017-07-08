@@ -114,7 +114,7 @@ function print_comment($id){
 }
 
 function comment_form(){
-	echo '<li class="write-new">
+	echo '<li class="write-new" id="comment">
                 <form action="gallery.php?' . $_SERVER['QUERY_STRING'] .'" method="POST">
                     <textarea name="comment" placeholder="Write your comment here" ></textarea>
                     <div>

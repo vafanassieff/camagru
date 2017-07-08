@@ -1,4 +1,7 @@
 <?php
+
+$background = "./asset/img/index-background.jpg";
+
 include('./vue/header.php');
-include('./vue/footer.php');
 require('./vue/vueIndex.php');
+include('./vue/footer.php');

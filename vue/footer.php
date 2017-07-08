@@ -1,5 +1,4 @@
-<div class="clear"></div>
-<footer class="footer-distributed">
+﻿<footer class="footer-distributed">
 	<div class="footer-right">
 		<a href="#"><i class="fa fa-facebook"></i></a>
 		<a href="#"><i class="fa fa-twitter"></i></a>
@@ -15,4 +14,4 @@
 		<p>Camagru &copy; 2017</p>
 	</div>
 </footer>
-</div>
+</body>

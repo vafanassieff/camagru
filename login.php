@@ -1,7 +1,9 @@
 <?php
+
+$background = "./asset/img/login-background.jpg";
+
 require('./function/user_login.php');
 include('./vue/header.php');
-include('./vue/footer.php');
 
 if (isset($_GET['submit']))
 {
@@ -11,4 +13,5 @@ if (isset($_GET['submit']))
 else
 	include('./vue/vueLogin.php');
 
+include('./vue/footer.php');
 ?>
