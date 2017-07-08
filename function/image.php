@@ -52,7 +52,7 @@ function display_gallery(){
 		echo '<a href="'. $link . '#comment"><i class="fa fa-comments"></i></a> '. $nb_com[0]['nb_comment'] .' 
 		<a href="'. $link_like .'"><i class="fa fa-heart" aria-hidden="true"></i></a> ' . $nb_like;
 	else
-		echo '<i class="fa fa-comments"></i> '. $nb_com[0]['nb_comment'] .' <i class="fa fa-heart" aria-hidden="true"></i> 0';
+		echo '<i class="fa fa-comments"></i> '. $nb_com[0]['nb_comment'] .' <i class="fa fa-heart" aria-hidden="true"></i> ' . $nb_like;
 		echo '</div></div></div>';
 	}
 }
