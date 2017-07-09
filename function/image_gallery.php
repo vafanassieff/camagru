@@ -10,7 +10,7 @@ if (isset($_GET['action']))
 		if (isset($_GET['id']))
 		{
 			if (find_image($_GET['id']) == FALSE)
-			header('Location: ./index.php');
+			header('Location: ./gallery.php');
 		}
 	}
 	if ($_GET['action'] == "like")
@@ -20,7 +20,17 @@ if (isset($_GET['action']))
 			if (find_image($_GET['id']))
 				add_like($_GET['id']);
 			else
-				header('Location: ./index.php');
+				header('Location: ./gallery.php');
+		}
+	}
+	if ($_GET['action'] == "del")
+	{
+		if (isset($_GET['id']))
+		{
+			if (find_image($_GET['id']))
+				delete_image($_GET['id']);
+			else
+				header('Location: ./gallery.php');
 		}
 	}
 }

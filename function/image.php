@@ -2,6 +2,26 @@
 
 require('./config/mysql.php');
 
+function delete_image($id){
+
+	$db = getBdd();
+
+	$id_temp = explode(" ", $id);
+	$unique_id = $id_temp[0];
+	$user_id = $id_temp[1];
+
+	if ($user_id == $_SESSION['id'])
+	{
+		$req = $db->prepare("DELETE FROM `camagru`.`images` WHERE name = :unique_id AND user_id = :user_id");
+		$req->bindParam(':unique_id', $unique_id);
+		$req->bindParam(':user_id', $user_id);
+		$req->execute();
+		header('Location: ./gallery.php');
+	}
+	else
+		header('Location: ./gallery.php');
+}
+
 function add_img($data, $filter_type){
 
 	$user_id = $_SESSION['id'];
@@ -73,7 +93,7 @@ function display_gallery(){
 
 	$db = getBdd();
 
-	$req = $db->prepare("SELECT * FROM `camagru`.`images` ORDER BY timestamp DESC");
+	$req = $db->prepare("SELECT * FROM `camagru`.`images` ORDER BY timestamp DESC LIMIT 12 OFFSET 0");
 	$req->execute();
 	$result = $req->fetchAll();
 	
@@ -84,17 +104,24 @@ function display_gallery(){
 		$link = './gallery.php?action=img&id='. $elem['name'] .'+'. $user_id;
 		$link_like = './gallery.php?action=like&id='. $elem['name'] .'+'. $user_id;
 		$nb_like = get_number_like($elem['name']);
-
+		$link_delete = './gallery.php?action=del&id='. $elem['name'] .'+'. $user_id;
 
 		echo '<div class="responsive">
 				<div class="gallery">
 					<a href="'. $link . '"><img src="' . $elem['path'] . '"></a>
 			<div class="desc">';
 	if(isset($_SESSION['user']))
-		echo '<a href="'. $link . '#comment"><i class="fa fa-comments"></i></a> '. $nb_com[0]['nb_comment'] .' 
-		<a href="'. $link_like .'"><i class="fa fa-heart" aria-hidden="true"></i></a> ' . $nb_like;
+	{
+		echo '<a href="'. $link . '#comment"><i class="fa fa-comments"></i></a> '. $nb_com[0]['nb_comment'] .'&nbsp;'; 
+		echo '<a href="'. $link_like .'"><i class="fa fa-heart" aria-hidden="true"></i></a> ' . $nb_like;
+		if ($_SESSION['id'] == $user_id)
+		{
+			echo '&nbsp; <a href="'. $link_delete .'"><i class="fa fa-trash-o" aria-hidden="true"></i></a>';
+		}
+	}
 	else
 		echo '<i class="fa fa-comments"></i> '. $nb_com[0]['nb_comment'] .' <i class="fa fa-heart" aria-hidden="true"></i> ' . $nb_like;
+
 		echo '</div></div></div>';
 	}
 }

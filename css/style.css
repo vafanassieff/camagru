@@ -5,11 +5,24 @@ html{
     width:100%;
 }
 
-a:visited{
-  color:black;
+.fa-comments, .fa-heart, .fa-trash-o{
+    color: black;
 }
-a:hover{
-  color:red;
+
+.fa-comments:hover, .fa-heart:hover, .fa-trash-o:hover{
+    color: red;
+}
+
+.fa-google-plus{
+    color: red;
+}
+
+.fa-twitter{
+    color: #00aced;
+}
+
+.fa-facebook{
+    color: #3b5998;
 }
 
 .general
