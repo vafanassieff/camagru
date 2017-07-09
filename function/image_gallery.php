@@ -2,7 +2,9 @@
 	session_start();
 	include('image.php');
 	include('comment.php');
+	include('like.php');
 
+	
 if (isset($_GET['action']))
 {
 	if ($_GET['action'] == "img")
