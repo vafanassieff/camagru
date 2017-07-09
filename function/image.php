@@ -16,14 +16,15 @@ function base64_to_png($data){
 
 	file_put_contents($filepath, $data);
 
-	$req = $db->prepare("INSERT INTO `camagru`.`images` (`user_id`, `name`, `path`, `comment`, `nb_comment` ,`nb_like`)
-								VALUES (:user_id, :name, :path, :comment, :nb_comment, :nb_like)");
+	$req = $db->prepare("INSERT INTO `camagru`.`images` (`user_id`, `name`, `path`, `comment`, `nb_comment` , `like_array` ,`nb_like`)
+								VALUES (:user_id, :name, :path, :comment, :nb_comment, :like_array, :nb_like)");
 	$req->execute(array(
 		':user_id' => $id,
 		':name' => $unique_id,
 		':path' => $filepath,
 		':comment' => "a:0:{}",
 		':nb_comment' => 0,
+		':like_array' => "a:0:{}",
 		':nb_like' => 0));
 }
 
