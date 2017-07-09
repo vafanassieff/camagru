@@ -2,6 +2,33 @@
 
 require('./config/mysql.php');
 
+function add_img_upload($file, $filter_type, &$errors){
+
+		$file_name = $file['name'];
+      	$file_size = $file['size'];
+      	$file_tmp  = $file['tmp_name'];
+      	$file_type = $file['type'];
+		$file_ext  =   strtolower(end(explode('.',$file_name)));
+		$unique_id = substr( base_convert( time(), 10, 36 ) . md5( microtime() ), 0, 16 );
+		$user_id = $_SESSION['id'];
+		$filter['name'] = $filter_type;
+
+
+		$expensions= array("jpeg","jpg","png");
+
+		if(in_array($file_ext,$expensions) === FALSE)
+        	$errors[]="extension not allowed, please choose a JPEG or PNG file.";
+		if($file_size > 2097152)
+         	$errors[]='File size must be excately 2 MB';
+		if(empty($errors) == TRUE)
+		{
+			$filepath = "./content/". $user_id . '/' . $unique_id . '.' . $file_ext;
+			move_uploaded_file($file_tmp,$filepath);
+			add_filter($filepath, $filter);
+			add_img_to_db($filepath, $unique_id, $user_id);
+		}
+}
+
 function delete_image($id){
 
 	$db = getBdd();
@@ -22,7 +49,7 @@ function delete_image($id){
 		header('Location: ./gallery.php');
 }
 
-function add_img($data, $filter_type){
+function add_img_webcam($data, $filter_type){
 
 	$user_id = $_SESSION['id'];
 	$unique_id = substr( base_convert( time(), 10, 36 ) . md5( microtime() ), 0, 16 );
@@ -42,12 +69,12 @@ function add_filter($filepath, $filter){
 	$img_filter = imagecreatefrompng('./asset/filter/'. $filter['name'] .'.png');
 	imagealphablending($img_original, true);
 	imagesavealpha($img_original, true);
-	$width = imagesx($$img_filter);
-    $height = imagesy($$img_filter);
-	imagecopy($img_original, $$img_filter, 0, 0, 0, 0, $width, $height);
+	$width = imagesx($img_filter);
+    $height = imagesy($img_filter);
+	imagecopy($img_original, $img_filter, 0, 0, 0, 0, $width, $height);
 	imagepng($img_original, $filepath);
 	imagedestroy($img_original);
-	imagedestroy($$img_filter);
+	imagedestroy($img_filter);
 }
 
 function add_img_to_db($filepath, $unique_id, $user_id){

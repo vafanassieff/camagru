@@ -12,12 +12,15 @@
     		</div>
 		</div>
 		<div class="picture-action">
-		<form action="./montage.php" method="POST">
+		<form action="./montage.php" method="POST" enctype="multipart/form-data">
 			<input type="hidden" name="img" id="imgb64"/>
 			<input type="radio" name="radio" value="illuminati">Illuminati
 			<input type="radio" name="radio" value="dog">Dog
 			<input type="radio" name="radio" value="coeur">Hearth
-			<input type="submit" name="submit "value="Submit" onclick="testimg();"/>
+			<br>
+			<input type="file" name="upload" />
+			<br>
+			<input type="submit" name="submit" value="Submit" onclick="testimg();"/>
 		</form>
 	</div>
 	</div>

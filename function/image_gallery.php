@@ -4,7 +4,6 @@
 	include('comment.php');
 	include('like.php');
 
-	
 if (isset($_GET['action']))
 {
 	if ($_GET['action'] == "img")
@@ -15,7 +14,7 @@ if (isset($_GET['action']))
 			header('Location: ./gallery.php');
 		}
 	}
-	if ($_GET['action'] == "like")
+	if ($_GET['action'] == "like" && isset($_SESSION['id']))
 	{
 		if (isset($_GET['id']))
 		{
@@ -25,7 +24,7 @@ if (isset($_GET['action']))
 				header('Location: ./gallery.php');
 		}
 	}
-	if ($_GET['action'] == "del")
+	if ($_GET['action'] == "del" && isset($_SESSION['id']))
 	{
 		if (isset($_GET['id']))
 		{
