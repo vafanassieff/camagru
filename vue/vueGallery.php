@@ -4,7 +4,7 @@
 			if ($_GET['action'] == "img" && isset($_GET['id']))
 				display_one_image($_GET['id']);
 		}
-		else
-			display_gallery();
+		else if (isset($_GET['page']))
+				display_gallery($_GET['page']);
 			?>
 	<div class="clearfix"></div>

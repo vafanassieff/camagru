@@ -35,9 +35,13 @@ if (isset($_GET['action']))
 	}
 }
 
+else if (!isset($_GET['page']))
+	header('Location: gallery.php?page=0');
+
 	if (isset($_POST['submit']))
 	{
 		if (isset($_POST['comment']) && ctype_space($_POST['comment']) == FALSE)
 			add_comment($_POST['comment'], $_GET['id']);
 	}
+
 ?>

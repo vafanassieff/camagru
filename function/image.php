@@ -89,11 +89,16 @@ function last_captured_img($user_id){
 	}
 }
 
-function display_gallery(){
+function display_gallery($page){
 
 	$db = getBdd();
 
-	$req = $db->prepare("SELECT * FROM `camagru`.`images` ORDER BY timestamp DESC LIMIT 12 OFFSET 0");
+	$offset = $page * 11;
+	$nextpage = $page + 1;
+	$previouspage = $page - 1;
+
+	$req = $db->prepare("SELECT * FROM `camagru`.`images` ORDER BY timestamp DESC LIMIT 12 OFFSET :offset");
+	$req->bindValue('offset', $offset, PDO::PARAM_INT);
 	$req->execute();
 	$result = $req->fetchAll();
 	
@@ -124,6 +129,14 @@ function display_gallery(){
 
 		echo '</div></div></div>';
 	}
+	if ($req->rowCount() > 0)
+		echo '<div class="page">
+			 <a href="./gallery.php?page='. $nextpage .'">Next</a> 
+		</div>';
+	if ($previouspage >= 0)
+		echo '<div class="page">
+			 <a href="./gallery.php?page='. $previouspage .'">Previous</a> 
+		</div>';
 }
 
 function display_one_image($id){

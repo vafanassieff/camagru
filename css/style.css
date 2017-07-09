@@ -207,6 +207,12 @@ div.desc {
     text-align: center;
 }
 
+.page{
+    display:flex;
+    justify-content: center;
+     padding: 10px;
+}
+
 * {
     box-sizing: border-box;
 }
