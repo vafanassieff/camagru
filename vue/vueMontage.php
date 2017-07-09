@@ -18,7 +18,7 @@
 			<input type="radio" name="radio" value="dog">Dog
 			<input type="radio" name="radio" value="coeur">Hearth
 			<br>
-			<input type="file" name="upload" />
+			<input type="file" name="upload"/>
 			<br>
 			<input type="submit" name="submit" value="Submit" onclick="testimg();"/>
 		</form>

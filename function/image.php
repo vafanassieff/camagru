@@ -4,6 +4,7 @@ require('./config/mysql.php');
 
 function add_img_upload($file, $filter_type, &$errors){
 
+		$check == TRUE;
 		$file_name = $file['name'];
       	$file_size = $file['size'];
       	$file_tmp  = $file['tmp_name'];
@@ -12,21 +13,87 @@ function add_img_upload($file, $filter_type, &$errors){
 		$unique_id = substr( base_convert( time(), 10, 36 ) . md5( microtime() ), 0, 16 );
 		$user_id = $_SESSION['id'];
 		$filter['name'] = $filter_type;
+		$expensions = array("jpeg","jpg","png");
+		$type = array("image/png", "image/jpeg");
 
+		if(in_array($file_type ,$type) === FALSE)
+        	$errors[]="Type not allowed, please choose a PNG file.";
 
-		$expensions= array("jpeg","jpg","png");
+		if(in_array($file_ext , $expensions) === FALSE)
+        	$errors[]="Type not allowed, please choose a PNG file.";
 
-		if(in_array($file_ext,$expensions) === FALSE)
-        	$errors[]="extension not allowed, please choose a JPEG or PNG file.";
 		if($file_size > 2097152)
          	$errors[]='File size must be excately 2 MB';
+
+		if (getimagesize($file_tmp) == FALSE)
+			$errors[]='This is not an image';
+
 		if(empty($errors) == TRUE)
 		{
 			$filepath = "./content/". $user_id . '/' . $unique_id . '.' . $file_ext;
-			move_uploaded_file($file_tmp,$filepath);
-			add_filter($filepath, $filter);
+			move_uploaded_file($file_tmp, $filepath);
+			add_filter($filepath, $filter, $file_type, $check);
 			add_img_to_db($filepath, $unique_id, $user_id);
 		}
+}
+
+function add_img_webcam($data, $filter_type){
+
+	$type = "image/png";
+
+	$user_id = $_SESSION['id'];
+	$unique_id = substr( base_convert( time(), 10, 36 ) . md5( microtime() ), 0, 16 );
+	$filepath = "./content/" . $user_id . "/" .$unique_id . ".png";
+
+	$filter = array();
+	$filter['name'] = $filter_type;
+
+	base64_to_png($data, $filepath);
+	add_filter($filepath, $filter, $type);
+	add_img_to_db($filepath, $unique_id, $user_id);
+}
+
+function add_filter($filepath, $filter, $type){
+
+	if ($type == "image/png")
+		$img_original = imagecreatefrompng($filepath);
+	if ($type == "image/jpeg")
+		$img_original = imagecreatefromjpeg($filepath);
+
+		$img_filter = imagecreatefrompng('./asset/filter/'. $filter['name'] .'.png');
+		imagealphablending($img_original, true);
+		imagesavealpha($img_original, true);
+		$width = imagesx($img_filter);
+   		$height = imagesy($img_filter);
+		imagecopy($img_original, $img_filter, 0, 0, 0, 0, $width, $height);
+		imagepng($img_original, $filepath);
+		imagedestroy($img_original);
+		imagedestroy($img_filter);
+}
+
+function base64_to_png($data, $filepath){
+
+	list($type, $data) = explode(';', $data);
+	list(, $data)      = explode(',', $data);
+	$data = base64_decode($data);
+
+	file_put_contents($filepath, $data);
+}
+
+function add_img_to_db($filepath, $unique_id, $user_id){
+
+	$db = getBdd();
+
+	$req = $db->prepare("INSERT INTO `camagru`.`images` (`user_id`, `name`, `path`, `comment`, `nb_comment` , `like_array` ,`nb_like`)
+								VALUES (:user_id, :name, :path, :comment, :nb_comment, :like_array, :nb_like)");
+	$req->execute(array(
+		':user_id' => $user_id,
+		':name' => $unique_id,
+		':path' => $filepath,
+		':comment' => "a:0:{}",
+		':nb_comment' => 0,
+		':like_array' => "a:0:{}",
+		':nb_like' => 0));
 }
 
 function delete_image($id){
@@ -47,60 +114,6 @@ function delete_image($id){
 	}
 	else
 		header('Location: ./gallery.php');
-}
-
-function add_img_webcam($data, $filter_type){
-
-	$user_id = $_SESSION['id'];
-	$unique_id = substr( base_convert( time(), 10, 36 ) . md5( microtime() ), 0, 16 );
-	$filepath = "./content/" . $user_id . "/" .$unique_id . ".png";
-
-	$filter = array();
-	$filter['name'] = $filter_type;
-
-	base64_to_png($data, $filepath);
-	add_filter($filepath, $filter);
-	add_img_to_db($filepath, $unique_id, $user_id);
-}
-
-function add_filter($filepath, $filter){
-
-	$img_original = imagecreatefrompng($filepath);
-	$img_filter = imagecreatefrompng('./asset/filter/'. $filter['name'] .'.png');
-	imagealphablending($img_original, true);
-	imagesavealpha($img_original, true);
-	$width = imagesx($img_filter);
-    $height = imagesy($img_filter);
-	imagecopy($img_original, $img_filter, 0, 0, 0, 0, $width, $height);
-	imagepng($img_original, $filepath);
-	imagedestroy($img_original);
-	imagedestroy($img_filter);
-}
-
-function add_img_to_db($filepath, $unique_id, $user_id){
-
-	$db = getBdd();
-
-	$req = $db->prepare("INSERT INTO `camagru`.`images` (`user_id`, `name`, `path`, `comment`, `nb_comment` , `like_array` ,`nb_like`)
-								VALUES (:user_id, :name, :path, :comment, :nb_comment, :like_array, :nb_like)");
-	$req->execute(array(
-		':user_id' => $user_id,
-		':name' => $unique_id,
-		':path' => $filepath,
-		':comment' => "a:0:{}",
-		':nb_comment' => 0,
-		':like_array' => "a:0:{}",
-		':nb_like' => 0));
-}
-
-function base64_to_png($data, $filepath){
-
-	list($type, $data) = explode(';', $data);
-	list(, $data)      = explode(',', $data);
-	$data = base64_decode($data);
-
-	file_put_contents($filepath, $data);
-
 }
 
 function last_captured_img($user_id){

@@ -167,6 +167,7 @@ div.social-media{
 }
 
 div.gallery{
+    text-align: center;
 	margin:10px;
 	background: white;
     border: 1px solid #ccc;
@@ -177,8 +178,8 @@ div.gallery:hover {
 }
 
 div.gallery img {
-    width: 100%;
-    height: auto;
+   width: 100% !important;
+  height: auto !important;
 }
 
 div.gallery-large{

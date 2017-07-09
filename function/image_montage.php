@@ -11,27 +11,16 @@ $error = array();
 
 if (isset($_POST['submit']))
 {
-	if (isset($_FILES['upload']) && isset($_POST['radio']))
+	if ($_POST['img'] != $default_img && $_POST['img'] != $blank_img)
+	{
+		add_img_webcam($_POST['img'], $_POST['radio']);
+		unset($_POST);
+	}
+	else if (!empty($_FILES['upload']) && !empty($_POST['radio']))
 	{
 		add_img_upload($_FILES['upload'], $_POST['radio'], $error);
-		$_POST = array();
-		header("Location: ./montage.php");
+		unset($_POST);
+		unset($_FILES);
 	}
-	if (isset($_POST['img']))
-	{
-		if ($_POST['img'] == $default_img  || $_POST['img'] == $blank_img)
-		{
-			$_POST = array();
-			header("Location: ./montage.php");
-		}
-
-		else
-		{
-			add_img_webcam($_POST['img'], $_POST['radio']);
-			$_POST = array();
-			header("Location: ./montage.php");
-		}
-	}
-
 }
 ?>
