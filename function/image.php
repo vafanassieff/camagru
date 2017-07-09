@@ -2,30 +2,71 @@
 
 require('./config/mysql.php');
 
-function base64_to_png($data){
+function add_img($data, $filter_type){
+
+	$user_id = $_SESSION['id'];
+	$unique_id = substr( base_convert( time(), 10, 36 ) . md5( microtime() ), 0, 16 );
+	$filepath = "./content/" . $user_id . "/" .$unique_id . ".png";
+
+	$filter = array();
+	$filter['name'] = $filter_type;
+
+	base64_to_png($data, $filepath);
+	add_filter($filepath, $filter);
+	add_img_to_db($filepath, $unique_id, $user_id);
+}
+
+function add_filter($filepath, $filter){
+
+	$img_original = imagecreatefrompng($filepath);
+	$img_filer = imagecreatefrompng('./asset/filter/'. $filter['name'] .'.png');
+	imagealphablending($img_original, true);
+	imagesavealpha($img_original, true);
+	$width = imagesx($img_filer);
+    $height = imagesy($img_filer);
+	imagecopy($img_original, $img_filer, 0, 0, 0, 0, $width, $height);
+	imagepng($img_original, $filepath);
+}
+
+function add_img_to_db($filepath, $unique_id, $user_id){
 
 	$db = getBdd();
-	$id = $_SESSION['id'];
-
-	list($type, $data) = explode(';', $data);
-	list(, $data)      = explode(',', $data);
-	$data = base64_decode($data);
-	
-	$unique_id = substr( base_convert( time(), 10, 36 ) . md5( microtime() ), 0, 16 );
-	$filepath = "./content/" . $id . "/" .$unique_id . ".png";
-
-	file_put_contents($filepath, $data);
 
 	$req = $db->prepare("INSERT INTO `camagru`.`images` (`user_id`, `name`, `path`, `comment`, `nb_comment` , `like_array` ,`nb_like`)
 								VALUES (:user_id, :name, :path, :comment, :nb_comment, :like_array, :nb_like)");
 	$req->execute(array(
-		':user_id' => $id,
+		':user_id' => $user_id,
 		':name' => $unique_id,
 		':path' => $filepath,
 		':comment' => "a:0:{}",
 		':nb_comment' => 0,
 		':like_array' => "a:0:{}",
 		':nb_like' => 0));
+}
+
+function base64_to_png($data, $filepath){
+
+	list($type, $data) = explode(';', $data);
+	list(, $data)      = explode(',', $data);
+	$data = base64_decode($data);
+
+	file_put_contents($filepath, $data);
+
+}
+
+function last_captured_img($user_id){
+
+	$db = getBdd();
+
+	$req = $db->prepare("SELECT * FROM `camagru`.`images` WHERE user_id = :id ORDER BY timestamp DESC LIMIT 4");
+	$req->bindParam(':id', $user_id);
+	$req->execute();
+	$result = $req->fetchAll();
+	foreach ($result as $elem){
+		echo '';
+		echo '<img class="last-image" src="' . $elem['path'] .'"> ';
+		echo '<br>';
+	}
 }
 
 function display_gallery(){

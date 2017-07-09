@@ -10,7 +10,7 @@
 
   function startup() {
     video = document.getElementById('video');
-    canvas = document.getElementById('canvas');
+    canvas = document.getElementById('canvas-result');
     photo = document.getElementById('photo');
     startbutton = document.getElementById('startbutton');
 
@@ -71,6 +71,13 @@
 
 
   function takepicture() {
+    var test;
+
+    test = true;
+    test = check();
+
+    if (test == false)
+      return;
     var context = canvas.getContext('2d');
     if (width && height) {
       canvas.width = width;
@@ -83,7 +90,17 @@
       clearphoto();
     }
   }
+ function check(){
+     var radios = document.getElementsByName("radio");
 
+     for (var i = 0, len = radios.length; i < len; i++) {
+          if (radios[i].checked) {
+              return true;
+          }
+     }
+
+     return false;
+ }
   window.addEventListener('load', startup, false);
 })();
 

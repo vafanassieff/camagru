@@ -24,32 +24,79 @@ a:hover{
 	background-position:center;
 	background-size: cover !important;
 }
-.main{
-    text-align: center;
-     display: inline-block;
+
+.outer {
+  display:flex;
+  justify-content: center;
+  padding: 10px;
+  
 }
+.outer > div {
+  border: 1px solid #000;
+  margin:2px;
+}   
 
 .montage, .side{
-     display: inherit;
-	position: relative;
-    width:50%;
+    width:80%;
+    min-height:800px;
     max-height: 1000px;
-    padding:15px;
-    margin:20px auto;
     background: white;
     border-radius: 5px;
     -webkit-border-radius:5px;
     -moz-border-radius: 5x;
 }
 .side{
+    width:20%;
+     text-align: center;
+}
 
-    max-width:20%;
+.side > h1 {
+    font-size: 2vw;
+    width:auto;
 }
 
 .last-image{
+    position: relative;
 	width: 100%;
-    height: auto;
 	padding:5px;
+    max-height: 213px;
+    max-width: 284px;
+}
+
+@media only screen and (max-width: 800px){
+    .picture{
+        flex-direction: column;
+        align-items: center;
+    }
+} 
+
+@media only screen and (max-width: 800px){
+    .outer {
+       flex-direction: column;
+       align-items: center;
+    }
+    .montage{
+         width:90%;
+    }
+    .side{
+        width:90%;
+    }
+} 
+
+.picture{
+    position: relative;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+}
+
+.picture-action{
+    position: relative;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    padding: 10px;
 }
 
 #video {
@@ -66,18 +113,17 @@ a:hover{
   height:240px;
 }
 
-#canvas {
+
+#canvas-result {
   display:none;
 }
 
 .camera {
   width: 340px;
-  display:inline-block;
 }
 
 .output {
   width: 340px;
-  display:inline-block;
 }
 
 #startbutton {
