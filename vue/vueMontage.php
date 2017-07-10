@@ -1,3 +1,4 @@
+<script language="JavaScript" type="text/javascript" src="./js/webcam.js"></script>
 <div class="outer">
     <div class="montage">
 		<div class="picture">
