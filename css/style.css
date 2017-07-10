@@ -93,7 +93,7 @@ html{
     padding: 10px;
 }
 
-#video {
+.video {
   border: 1px solid black;
   box-shadow: 2px 2px 3px black;
   width:320px;
@@ -118,6 +118,34 @@ html{
 
 .output {
   width: 340px;
+}
+
+.filter{
+    background-color: rgba(0, 0, 0, 0.0);
+    position:absolute;
+    float:left;
+    z-index:300000;
+    width:321px;
+    height:241px;
+    pointer-events: none;
+
+}
+
+.grayscale{
+    filter:grayscale(100%);  
+}
+
+.sepia{
+    filter:sepia(100%);
+}
+
+.negative{
+    filter:invert(100%);
+}
+
+.filter img{
+    max-width:140px;
+    max-height:140px;
 }
 
 #startbutton {

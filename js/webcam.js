@@ -108,3 +108,21 @@
     var dataURL = canvas.toDataURL('image/png');
     document.getElementById('imgb64').value = dataURL;
 }
+
+function filter(filter){
+    var element = document.getElementById("video");
+
+    element.className = 'video';
+    element.className += ' ';
+    element.className += filter;
+}
+
+function filter_img(filter){
+    
+    var element = document.getElementById("filterimg");
+    var path = './asset/filter/';
+    path += filter;
+    path += '.png';
+
+    element.src = path;
+}

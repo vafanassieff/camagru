@@ -17,6 +17,7 @@ date_default_timezone_set('CET');
 		<link rel="stylesheet" type="text/css" href="css/comment.css">
   		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans">
   		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+		<script language="JavaScript" type="text/javascript" src="./js/webcam.js"></script>
   <title>Camagru</title>
 </head>
 <body class="general" background="<?echo $background?>">
