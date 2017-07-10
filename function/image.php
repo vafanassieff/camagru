@@ -2,6 +2,24 @@
 
 require('./config/mysql.php');
 
+function resize_img($filepath){
+
+	$old_img = imagecreatefrompng($filepath);
+	$size_old = getimagesize($filepath);
+	$new_h = 900;
+
+	$resize = (($new_h * 100) / $size_old[1]);
+	$new_w = (($size_old[0] * $resize)/ 100);
+
+	$new_img = imagecreatetruecolor($new_w, $new_h);
+	imagecopyresampled($new_img, $old_img,0 ,0 ,0 ,0 ,$new_w, $new_h, $size_old[0], $size_old[1]);
+
+	imagedestroy($old_img);
+
+	imagepng($new_img, $filepath);
+
+}
+
 function add_img_upload($file, $filter_type, &$errors){
 
 		$check == TRUE;
@@ -25,7 +43,7 @@ function add_img_upload($file, $filter_type, &$errors){
 		if($file_size > 2097152)
          	$errors[]='File size must be excately 2 MB';
 
-		if (getimagesize($file_tmp) == FALSE)
+		if (empty($file_tmp) == FALSE && getimagesize($file_tmp) == FALSE)
 			$errors[]='This is not an image';
 
 		if(empty($errors) == TRUE)
@@ -33,6 +51,7 @@ function add_img_upload($file, $filter_type, &$errors){
 			$filepath = "./content/". $user_id . '/' . $unique_id . '.' . $file_ext;
 			move_uploaded_file($file_tmp, $filepath);
 			add_filter($filepath, $filter, $file_type, $check);
+			resize_img($filepath);
 			add_img_to_db($filepath, $unique_id, $user_id);
 		}
 }
@@ -144,6 +163,13 @@ function display_gallery($page){
 	$req->execute();
 	$result = $req->fetchAll();
 	
+	echo '<div class="page">';
+	if ($previouspage >= 0)
+		echo '<a href="./gallery.php?page='. $previouspage .'"><i class="fa fa-arrow-left"></i></a>';
+	if ($req->rowCount() == 12 )
+		echo '&nbsp; <a href="./gallery.php?page='. $nextpage .'"><i class="fa fa-arrow-right"></i></a>';
+	echo '</div>';
+
 	foreach ($result as $elem){
 		$id = explode('/', $elem['path']);
 		$user_id = $id[2];
@@ -156,29 +182,22 @@ function display_gallery($page){
 		echo '<div class="responsive">
 				<div class="gallery">
 					<a href="'. $link . '"><img src="' . $elem['path'] . '"></a>
-			<div class="desc">';
+						<div class="desc">';
 	if(isset($_SESSION['user']))
 	{
 		echo '<a href="'. $link . '#comment"><i class="fa fa-comments"></i></a> '. $nb_com[0]['nb_comment'] .'&nbsp;'; 
 		echo '<a href="'. $link_like .'"><i class="fa fa-heart" aria-hidden="true"></i></a> ' . $nb_like;
 		if ($_SESSION['id'] == $user_id)
-		{
 			echo '&nbsp; <a href="'. $link_delete .'"><i class="fa fa-trash-o" aria-hidden="true"></i></a>';
-		}
 	}
 	else
 		echo '<i class="fa fa-comments"></i> '. $nb_com[0]['nb_comment'] .' <i class="fa fa-heart" aria-hidden="true"></i> ' . $nb_like;
 
-		echo '</div></div></div>';
+		echo '	</div>
+			</div>
+		</div>
+		';
 	}
-	if ($req->rowCount() > 0)
-		echo '<div class="page">
-			 <a href="./gallery.php?page='. $nextpage .'">Next</a> 
-		</div>';
-	if ($previouspage >= 0)
-		echo '<div class="page">
-			 <a href="./gallery.php?page='. $previouspage .'">Previous</a> 
-		</div>';
 }
 
 function display_one_image($id){

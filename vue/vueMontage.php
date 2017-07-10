@@ -22,6 +22,7 @@
 			<br>
 			<input type="submit" name="submit" value="Submit" onclick="testimg();"/>
 		</form>
+		<!--<?php print_r($error);?>-->
 	</div>
 	</div>
   	<div class="side">

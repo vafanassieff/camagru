@@ -5,26 +5,6 @@ html{
     width:100%;
 }
 
-.fa-comments, .fa-heart, .fa-trash-o{
-    color: black;
-}
-
-.fa-comments:hover, .fa-heart:hover, .fa-trash-o:hover{
-    color: red;
-}
-
-.fa-google-plus{
-    color: red;
-}
-
-.fa-twitter{
-    color: #00aced;
-}
-
-.fa-facebook{
-    color: #3b5998;
-}
-
 .general
 {
 	position: relative;
@@ -169,7 +149,7 @@ div.social-media{
 div.gallery{
     text-align: center;
 	margin:10px;
-	background: white;
+	background-color: white;
     border: 1px solid #ccc;
 }
 
@@ -210,17 +190,17 @@ div.desc {
 }
 
 .page{
-    display:flex;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
     justify-content: center;
-     padding: 10px;
+    align-items: center;
+    font-size:30px;
 }
 
-* {
-    box-sizing: border-box;
-}
 
 .responsive {
-    padding: 0 6px;
+    padding: 10 6px;
     float: left;
     width: 24.99999%;
 }
@@ -247,4 +227,28 @@ div.desc {
 
 textarea {
   resize: vertical; /* user can resize vertically, but width is fixed */
+}
+
+.fa-arrow-right, .fa-arrow-left{
+    color:white;
+}
+
+.fa-comments, .fa-heart, .fa-trash-o{
+    color: black;
+}
+
+.fa-comments:hover, .fa-heart:hover, .fa-trash-o:hover{
+    color: red;
+}
+
+.fa-google-plus{
+    color: red;
+}
+
+.fa-twitter{
+    color: #00aced;
+}
+
+.fa-facebook{
+    color: #3b5998;
 }

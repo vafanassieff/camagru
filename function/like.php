@@ -34,10 +34,9 @@ function add_like($id){
 	$unique_id = $id_temp[0];
 	$like_serialized = get_like_array($unique_id);
 	$like_array = unserialize($like_serialized);
-	if (empty($like_array) == TRUE)
-		$like_array[] = $login;
+
 	if (in_array($login, $like_array) == TRUE)
-			header('Location: ./index.php');
+		remove_like($login, $like_array);
 	else
 		$like_array[] = $login;
 	$like_serialized = serialize($like_array);
@@ -48,6 +47,14 @@ function add_like($id){
 	$req->execute();
 	update_nb_like($like_array, $unique_id);
 	header('Location: ./gallery.php');
+}
+
+function remove_like($login, &$like_array){
+
+	$index = array_search($login, $like_array);
+	if($index !== FALSE)
+        unset($like_array[$index]);
+
 }
 
 function update_nb_like($like_array, $unique_id){

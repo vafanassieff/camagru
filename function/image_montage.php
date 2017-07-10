@@ -23,4 +23,6 @@ if (isset($_POST['submit']))
 		unset($_FILES);
 	}
 }
+unset($_POST);
+unset($_FILES);
 ?>
