@@ -91,7 +91,7 @@
     }
   }
  function check(){
-     var radios = document.getElementsByName("radio");
+     var radios = document.getElementsByTagName("input");
 
      for (var i = 0, len = radios.length; i < len; i++) {
           if (radios[i].checked) {

@@ -1,4 +1,4 @@
-﻿
+﻿<div class="clear"></div>
 <footer class="footer-distributed">
 	<div class="footer-right">
 		<a href="#"><span class="fa-stack fa-lg">

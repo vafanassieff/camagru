@@ -13,12 +13,12 @@ if (isset($_POST['submit']))
 {
 	if ($_POST['img'] != $default_img && $_POST['img'] != $blank_img)
 	{
-		add_img_webcam($_POST['img'], $_POST['radio']);
+		add_img_webcam($_POST['img'], $_POST['filter_alpha']);
 		unset($_POST);
 	}
-	else if (!empty($_FILES['upload']) && !empty($_POST['radio']))
+	else if (!empty($_FILES['upload']) && !empty($_POST['filter_alpha']))
 	{
-		add_img_upload($_FILES['upload'], $_POST['radio'], $error);
+		add_img_upload($_FILES['upload'], $_POST['filter_alpha'], $error);
 		unset($_POST);
 		unset($_FILES);
 	}
