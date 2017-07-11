@@ -7,7 +7,7 @@
 					<img class="filterimg" id="filterimg" src="">
 				</div>
 				<div class ="photo-result">
-					<img id="photo" class ="photo">
+					<img id="photo" class ="photo" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==">
 				</div>
          		<video id="video" class="video">Video stream not available.</video>
          	 	<button id="startbutton">Take photo</button> 

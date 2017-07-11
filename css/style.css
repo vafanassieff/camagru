@@ -256,6 +256,8 @@ div.desc {
     }
     .montage{
          width:90%;
+          min-height:400px;
+        max-height: 1000px;
     }
     .side{
         width:90%;

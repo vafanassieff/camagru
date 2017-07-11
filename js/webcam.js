@@ -59,17 +59,7 @@
       ev.preventDefault();
     }, false);
 
-    clearphoto();
   }
-
-  function clearphoto() {
-    var context = canvas.getContext('2d');
-    context.fillStyle = "rgba(0, 0, 0, 0)";
-    context.fillRect(0, 0, canvas.width, canvas.height);
-    var data = canvas.toDataURL('image/png');
-    photo.setAttribute('src', data);
-    }
-
 
   function takepicture() {
     var test;
@@ -120,8 +110,9 @@ function clearphotobis() {
     }
 
 function testimg(){
-    var dataURL = canvas.toDataURL('image/png');
-    document.getElementById('imgb64').value = dataURL;
+    var photo = document.getElementById('photo');
+
+    document.getElementById('imgb64').value = photo.src;
 }
 
 function filter(filter){
