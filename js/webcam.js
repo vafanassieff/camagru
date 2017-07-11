@@ -113,7 +113,7 @@ function clearphotobis() {
     photo.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==';
     filter.src = '';
     video.className = 'video';
-
+    photo.className = 'photo';
     var ele = document.getElementsByTagName("input");
       for(var i=0;i<ele.length;i++)
         ele[i].checked = false;
@@ -125,11 +125,16 @@ function testimg(){
 }
 
 function filter(filter){
-    var element = document.getElementById("video");
+    var video = document.getElementById("video");
+    var photoresult = document.getElementById("photo");
 
-    element.className = 'video';
-    element.className += ' ';
-    element.className += filter;
+    video.className = 'video';
+    video.className += ' ';
+    video.className += filter;
+
+    photoresult.className = 'photo';
+    photoresult.className += ' ';
+    photoresult.className += filter;
 }
 
 function filter_img(filter){

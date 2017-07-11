@@ -84,17 +84,18 @@ html{
     position:absolute;
     float:left;
     z-index:5;
-    width:641px;
-    height:481px;
+    width:640px;
+    height:480px;
     pointer-events: none;
 }
 
 .photo-result{
+    border: 1px solid black;
     position:absolute;
     float:left;
     z-index:5;
-    width:641px;
-    height:481px;
+    width:640px;
+    height:480px;
     pointer-events: none;
 }
 

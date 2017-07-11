@@ -20,7 +20,7 @@ function resize_img($filepath){
 
 }
 
-function add_img_upload($file, $filter_type, &$errors){
+function add_img_upload($file, $filter_type, $filter_process, &$errors){
 
 		$check == TRUE;
 		$file_name = $file['name'];
@@ -56,7 +56,7 @@ function add_img_upload($file, $filter_type, &$errors){
 		}
 }
 
-function add_img_webcam($data, $filter_type){
+function add_img_webcam($data, $filter_type, $filter_process){
 
 	$type = "image/png";
 
@@ -68,16 +68,38 @@ function add_img_webcam($data, $filter_type){
 	$filter['name'] = $filter_type;
 
 	base64_to_png($data, $filepath);
-	add_filter($filepath, $filter, $type);
+	add_filter($filepath, $filter, $type, $filter_process);
 	add_img_to_db($filepath, $unique_id, $user_id);
 }
 
-function add_filter($filepath, $filter, $type){
+function process_filter(&$img, $filter_process){
+
+	$filter_int;
+
+	if ($filter_process == "grayscale")
+		$filter_int = IMG_FILTER_GRAYSCALE;
+	else if ($filter_process == "negative")
+		$filter_int = IMG_FILTER_NEGATE;
+	else if ($filter_process == "sepia")
+	{
+		imagefilter($img, IMG_FILTER_GRAYSCALE);
+		imagefilter($img, IMG_FILTER_COLORIZE, 90, 60, 30);
+		return ;
+	}
+	if (isset($filter_int))
+		imagefilter($img, $filter_int);
+}
+
+function add_filter($filepath, $filter, $type, $filter_process){
 
 	if ($type == "image/png")
 		$img_original = imagecreatefrompng($filepath);
 	if ($type == "image/jpeg")
 		$img_original = imagecreatefromjpeg($filepath);
+
+
+	if (!empty($filter_process))
+		process_filter($img_original, $filter_process);
 
 		$img_filter = imagecreatefrompng('./asset/filter/'. $filter['name'] .'.png');
 		imagealphablending($img_original, true);
@@ -144,7 +166,7 @@ function last_captured_img($user_id){
 	$req->execute();
 	$result = $req->fetchAll();
 	foreach ($result as $elem){
-		
+
 		$link = './gallery.php?action=img&id='. $elem['name'] .'+'. $user_id;
 
 		echo '';
