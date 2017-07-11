@@ -107,7 +107,7 @@ function print_comment($id){
                     <a>'.$comment['author'].'</a>
                     <span>'.$date.'</span>
                 </div>
-                <a class="avatar"><img src="" /> </a>
+                <a class="avatar"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" /> </a>
                 <p>'.$comment['comment'].'</p>
 			</li>';
 	}
