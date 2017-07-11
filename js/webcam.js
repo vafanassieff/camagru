@@ -5,7 +5,7 @@
   var streaming = false;
   var video = null;
   canvas = null;
-  var photo = null;
+  photo = null;
   var startbutton = null;
 
   function startup() {
@@ -55,15 +55,16 @@
 
     startbutton.addEventListener('click', function(ev){
       takepicture();
+    
       ev.preventDefault();
     }, false);
-    
+
     clearphoto();
   }
 
   function clearphoto() {
     var context = canvas.getContext('2d');
-    context.fillStyle = "#AAA";
+    context.fillStyle = "rgba(0, 0, 0, 0)";
     context.fillRect(0, 0, canvas.width, canvas.height);
     var data = canvas.toDataURL('image/png');
     photo.setAttribute('src', data);
@@ -104,7 +105,21 @@
   window.addEventListener('load', startup, false);
 })();
 
-  function testimg(){
+function clearphotobis() {
+    var photo = document.getElementById('photo');
+    var video = document.getElementById("video");
+    var filter = document.getElementById("filterimg");
+
+    photo.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==';
+    filter.src = '';
+    video.className = 'video';
+
+    var ele = document.getElementsByTagName("input");
+      for(var i=0;i<ele.length;i++)
+        ele[i].checked = false;
+    }
+
+function testimg(){
     var dataURL = canvas.toDataURL('image/png');
     document.getElementById('imgb64').value = dataURL;
 }

@@ -4,17 +4,18 @@
 		<div class="picture">
 			<div class="camera">
 				<div id="filter" class ="filter">
-					<img id="filterimg" src="">
+					<img class="filterimg" id="filterimg" src="">
 				</div>
-         		<video id="video"class="video">Video stream not available.</video>
+				<div class ="photo-result">
+					<img id="photo" class ="photo">
+				</div>
+         		<video id="video" class="video">Video stream not available.</video>
          	 	<button id="startbutton">Take photo</button> 
         	</div>
        		<canvas id="canvas-result"></canvas>
-    		<div class="output">
-      			 <img id="photo" alt="The screen capture will appear in this box.">
-    		</div>
 		</div>
 		<div class="picture-action">
+		<button id="resetbutton" onclick="clearphotobis();">Reset Photo</button> 
 		<form action="./montage.php" method="POST" enctype="multipart/form-data">
 			<input type="hidden"name="img" id="imgb64"/>
 			<input type="radio" name="filter_alpha" value="illuminati" id="illuminati" onclick="filter_img(this.id);">Illuminati

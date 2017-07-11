@@ -144,8 +144,11 @@ function last_captured_img($user_id){
 	$req->execute();
 	$result = $req->fetchAll();
 	foreach ($result as $elem){
+		
+		$link = './gallery.php?action=img&id='. $elem['name'] .'+'. $user_id;
+
 		echo '';
-		echo '<img class="last-image" src="' . $elem['path'] .'"> ';
+		echo '<a href="'. $link . '"><img class="last-image" src="' . $elem['path'] .'"></a> ';
 		echo '<br>';
 	}
 }

@@ -11,10 +11,14 @@ $error = array();
 
 if (isset($_POST['submit']))
 {
-	if ($_POST['img'] != $default_img && $_POST['img'] != $blank_img)
+	if (isset($_POST['img']))
 	{
-		add_img_webcam($_POST['img'], $_POST['filter_alpha']);
-		unset($_POST);
+		if ($_POST['img'] != $default_img && $_POST['img'] != $blank_img)
+		{
+			add_img_webcam($_POST['img'], $_POST['filter_alpha']);
+			unset($_POST);
+			return;
+		}
 	}
 	else if (!empty($_FILES['upload']) && !empty($_POST['filter_alpha']))
 	{
