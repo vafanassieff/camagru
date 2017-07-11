@@ -17,3 +17,10 @@ function getXMLHttpRequest() {
     }
     return xhr;
 }
+
+function addlike(){
+    var xhr = getXMLHttpRequest();
+
+    xhr.open("GET", "gallery.php?action=like&id=osxlvjfb6d4e015d+1", true);
+    xhr.send(null);
+}
