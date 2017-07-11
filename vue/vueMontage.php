@@ -30,8 +30,8 @@
 			<br>
 			<input type="submit" name="submit" value="Submit" onclick="testimg();"/>
 		</form>
-		<!--<?php print_r($error);?>-->
 	</div>
+	<center><?php print_error($error);?></center>
 	</div>
   	<div class="side">
     	<h1>Previous Picture</h1>

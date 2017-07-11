@@ -20,7 +20,7 @@ function resize_img($filepath){
 
 }
 
-function add_img_upload($file, $filter_type, $filter_process, &$errors){
+function add_img_upload($file, $filter_alpha, $filter_process, &$errors){
 
 		$check == TRUE;
 		$file_name = $file['name'];
@@ -30,15 +30,14 @@ function add_img_upload($file, $filter_type, $filter_process, &$errors){
 		$file_ext  =   strtolower(end(explode('.',$file_name)));
 		$unique_id = substr( base_convert( time(), 10, 36 ) . md5( microtime() ), 0, 16 );
 		$user_id = $_SESSION['id'];
-		$filter['name'] = $filter_type;
-		$expensions = array("jpeg","jpg","png");
-		$type = array("image/png", "image/jpeg");
+		$extensions = array("jpeg","jpg","png");
+		$kind_type = array("image/png", "image/jpeg");
 
-		if(in_array($file_type ,$type) === FALSE)
-        	$errors[]="Type not allowed, please choose a PNG file.";
+		if(in_array($file_type ,$kind_type) === FALSE)
+        	$errors[]="Type not allowed, please choose a PNG or JPG file.";
 
-		if(in_array($file_ext , $expensions) === FALSE)
-        	$errors[]="Type not allowed, please choose a PNG file.";
+		if(in_array($file_ext , $extensions) === FALSE)
+        	$errors[]="Extension not allowed, please choose a .png or .jpg file.";
 
 		if($file_size > 2097152)
          	$errors[]='File size must be excately 2 MB';
@@ -50,25 +49,23 @@ function add_img_upload($file, $filter_type, $filter_process, &$errors){
 		{
 			$filepath = "./content/". $user_id . '/' . $unique_id . '.' . $file_ext;
 			move_uploaded_file($file_tmp, $filepath);
-			add_filter($filepath, $filter, $file_type, $check);
+			add_filter($filepath, $filter_alpha, $file_type, $filter_process);
 			resize_img($filepath);
 			add_img_to_db($filepath, $unique_id, $user_id);
 		}
 }
 
-function add_img_webcam($data, $filter_type, $filter_process){
+function add_img_webcam($data, $filter_alpha, $filter_process){
 
-	$type = "image/png";
+	$img_type = "image/png";
 
 	$user_id = $_SESSION['id'];
 	$unique_id = substr( base_convert( time(), 10, 36 ) . md5( microtime() ), 0, 16 );
 	$filepath = "./content/" . $user_id . "/" .$unique_id . ".png";
 
-	$filter = array();
-	$filter['name'] = $filter_type;
 
 	base64_to_png($data, $filepath);
-	add_filter($filepath, $filter, $type, $filter_process);
+	add_filter($filepath, $filter_alpha, $img_type, $filter_process);
 	add_img_to_db($filepath, $unique_id, $user_id);
 }
 
@@ -90,26 +87,31 @@ function process_filter(&$img, $filter_process){
 		imagefilter($img, $filter_int);
 }
 
-function add_filter($filepath, $filter, $type, $filter_process){
+function add_filter($filepath, $filter_alpha, $img_type, $filter_process){
 
-	if ($type == "image/png")
+
+
+	if ($img_type == "image/png")
 		$img_original = imagecreatefrompng($filepath);
-	if ($type == "image/jpeg")
+	if ($img_type == "image/jpeg")
 		$img_original = imagecreatefromjpeg($filepath);
 
 
 	if (!empty($filter_process))
 		process_filter($img_original, $filter_process);
-
-		$img_filter = imagecreatefrompng('./asset/filter/'. $filter['name'] .'.png');
+	
+	if (!empty($filter_alpha))
+	{
+		$img_filter = imagecreatefrompng('./asset/filter/'. $filter_alpha .'.png');
 		imagealphablending($img_original, true);
 		imagesavealpha($img_original, true);
 		$width = imagesx($img_filter);
    		$height = imagesy($img_filter);
 		imagecopy($img_original, $img_filter, 0, 0, 0, 0, $width, $height);
+		imagedestroy($img_filter);
+	}
 		imagepng($img_original, $filepath);
 		imagedestroy($img_original);
-		imagedestroy($img_filter);
 }
 
 function base64_to_png($data, $filepath){
@@ -300,4 +302,13 @@ function social_media($link){
 </a>
 
 ';
+}
+
+function print_error($error){
+	if ($error == "")
+		return ;
+	echo '<br\>';
+	foreach ($error as $e){
+		echo '<center>'.$e.'</center>';
+	}
 }
