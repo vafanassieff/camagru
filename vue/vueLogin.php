@@ -17,6 +17,5 @@
 				 <br>
 				<center><input type="submit" name="submit" value="Reset Password"/></center>
 			</form>
-			<?php if (empty(!$error))
-				{print_error($error);}?>
+			<?php if (empty(!$error)){print_error($error);}?>
 </div>

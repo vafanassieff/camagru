@@ -17,7 +17,7 @@ if (isset($_POST['submit']))
 		unset($_POST);
 		return;
 	}
-	else if ($_FILES['upload'] != $error && (!empty($_POST['filter_alpha']) || $_POST['filter_process']))
+	else if (!empty($_FILES['upload']['name']) && (!empty($_POST['filter_alpha']) || !empty($_POST['filter_process'])))
 	{
 		add_img_upload($_FILES['upload'], $_POST['filter_alpha'], $_POST['filter_process'], $error);
 		unset($_POST);
